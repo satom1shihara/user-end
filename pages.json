@@ -1,0 +1,129 @@
+{
+	"pages": [
+		{
+            "path" : "pages/login/login",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+        },
+		{
+            "path" : "pages/forum/forum",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "小动物信息管理平台",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+        {
+            "path" : "pages/archive/archive",
+            "style":                                                                                    
+            {
+                "navigationBarTitleText": "小动物信息管理平台",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+        {
+            "path" : "pages/myInfo/myInfo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "小动物信息管理平台",
+                "enablePullDownRefresh": false
+            }
+        },
+		{
+			"path" : "pages/selfForum/selfForum",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的帖子",
+                "enablePullDownRefresh": false
+            }     
+        },
+        {
+            "path" : "pages/selfNotification/selfNotification",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的通知",
+                "enablePullDownRefresh": false
+            }    
+        },
+        {
+            "path" : "pages/selfArchive/selfArchive",
+            "style" :                                                                                    
+			{
+				"navigationBarTitleText": "我的领养信息",
+				"enablePullDownRefresh": false
+			}
+		}
+				
+        ,{
+            "path" : "pages/specificForum/specificForum",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+        },
+		
+		{
+		    "path" : "pages/specificArchive/specificArchive",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		}
+        ,{
+            "path" : "pages/createForum/createForum",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/createApply/createApply",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "小动物信息管理平台",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"app-plus": {
+			"background": "#efeff4"
+		}
+	},
+	"tabBar": {
+		"list": [
+			{
+				"pagePath": "pages/archive/archive",
+				"text": "档案",
+				"iconPath": "static/c1.png",
+				"selectedIconPath": "static/c1.png"
+			},
+			{
+				"pagePath": "pages/forum/forum",
+				"text": "论坛",
+				"iconPath": "static/c2.png",
+				"selectedIconPath": "static/c2.png"
+			},
+			{
+				"pagePath": "pages/myInfo/myInfo",
+				"text": "我的",
+				"iconPath": "static/c3.png",
+				"selectedIconPath": "static/c3.png"
+			}		]
+	}
+	
+}
