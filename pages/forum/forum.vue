@@ -1,0 +1,219 @@
+<template>
+	
+	<view>
+		<uni-row class="demo-uni-row" :gutter="gutter" :width="nvueWidth">
+							<uni-col :span="20">
+								<uni-search-bar @confirm="search" :focus="true" v-model="searchValue" @input="input"
+									@cancel="cancel" @clear="clear">
+								</uni-search-bar>
+							</uni-col>
+							<uni-col :span="4">
+								<button class="mini-btn" type="default" size="mini" @click="newForum" style="margin-top: 10px;">
+									<uni-icons type="plusempty"></uni-icons>
+								</button>
+							</uni-col>
+		</uni-row>
+		
+		<uni-notice-bar text="上方可进行搜索和发布新的帖子,下方可查看大家发布的帖子" />
+		
+		<div v-for="(item, index) in block">
+			
+			<uni-card  padding="10px 0" >
+				<template v-slot:title>
+					<uni-list>
+						<uni-list-item :title="item.title" ></uni-list-item>
+					</uni-list>
+				</template>
+				<image style="width: 100%;" :src="item.avatarUrl"></image>
+				<view slot="actions" class="card-actions">
+					<button type="default" @click="onClick(item)">
+						查看详情
+						<uni-icons type="forward" size="20"></uni-icons>
+					</button>
+				</view>
+			</uni-card>
+
+		</div>
+	</view>
+</template>
+
+<script>
+	export default {
+		
+		data() {
+			return {
+				gutter: 0,
+				nvueWidth: 730,
+				searchValue: "",
+				block: [
+					{
+						id: 1,
+						avatarUrl: "/static/logo.png",
+						user_name: "name",
+						tag: ["tag1", "tag2"],
+						content: "asjkdlfjaskldjfl;asdkfjasdlkfjasdlkcvjdslkfjasd;lkghksldnvsadovikjnoasinvironav;oasivoiawrhnvao;ighlkasdnv;asoivhj",
+						title: "title",
+						picUrl: ["/static/logo.png", "/static/logo.png"],
+						is_help: true,
+						commentList: [123, 234] // id of comment
+					},
+					{
+						id: 2,
+						avatarUrl: "/static/logo.png",
+						user_name: "name",
+						tag: ["tag1", "tag2"],
+						content: "content",
+						title: "title",
+						picUrl: ["/static/logo.png"],
+						is_help: true,
+						commentList: [123, 234] // id of comment
+					},
+					{
+						id: 3,
+						avatarUrl: "/static/logo.png",
+						user_name: "name",
+						tag: ["tag1", "tag2"],
+						content: "content",
+						title: "title",
+						picUrl: ["/static/logo.png"],
+						is_help: true,
+						commentList: [123, 234] // id of comment
+					},
+					{
+						id: 4,
+						avatarUrl: "/static/logo.png",
+						user_name: "name",
+						tag: ["tag1", "tag2"],
+						content: "content",
+						title: "title",
+						picUrl: ["/static/logo.png"],
+						is_help: true,
+						commentList: [123, 234] // id of comment
+					}
+				]
+			}
+		},
+		methods: {
+			search(res) {
+							uni.showToast({
+								title: '搜索：' + res.value,
+								icon: 'none'
+							})
+						},
+			input(res) {
+							console.log('----input:', res)
+						},
+			clear(res) {
+							uni.showToast({
+								title: 'clear事件，清除值为：' + res.value,
+								icon: 'none'
+							})
+						},
+			cancel(res) {
+							uni.showToast({
+								title: '点击取消，输入值为：' + res.value,
+								icon: 'none'
+							})
+						},
+			onBackPress() {
+						plus.key.hideSoftKeybord();
+					},
+			
+			newForum() {
+				// create a new forum
+				uni.navigateTo({
+					url: "/pages/createForum/createForum"
+				})
+			},
+			
+			onClick(item) {
+				const dataObj = {
+						id: item.id,
+						avatarUrl: item.avatarUrl,
+						user_name: item.user_name,
+						tag: item.tag,
+						content: item.content,
+						title: item.title,
+						picUrl: item.picUrl,
+						is_help: item.is_help,
+						commentList: item.commentList
+					};
+				uni.navigateTo({
+					url: "/pages/specificForum/specificForum?dataObj=" + encodeURIComponent(JSON.stringify(dataObj))
+				})
+			}
+			
+		}
+	}
+</script>
+
+<style scoped>
+	
+	.demo-uni-row {
+		margin-bottom: 10px;
+		display: block;
+	}
+	
+	.profile {
+	    display: flex;
+/* 	    align-items: center; */
+	    /* margin-top: 20px; */
+		height: auto;
+	  }
+	
+	  .avatar {
+		float: left;
+		display: inline-block;
+	  }
+	
+	  .info {
+		display: inline-block;
+		float: right;
+	    flex: 1;
+	  }
+	
+	  .name {
+	    font-size: 20px;
+	    font-weight: bold;
+	    margin-bottom: 10px;
+	  }
+	
+	  .content {
+	    font-size: 16px;
+	    line-height: 1.5;
+	  }
+	  
+	  .demo-uni-row {
+	  		margin-bottom: 10px;
+	  
+
+	  		display: block;
+
+	  	}
+	  
+
+	  	::v-deep .uni-row {
+	  		margin-bottom: 10px;
+	  	}
+	  
+
+	  
+	  	.demo-uni-col {
+	  		height: 36px;
+	  		border-radius: 5px;
+	  	}
+	  
+	  	.dark_deep {
+	  		background-color: #99a9bf;
+	  	}
+	  
+	  	.dark {
+	  		background-color: #d3dce6;
+	  	}
+	  
+	  	.light {
+	  		background-color: #e5e9f2;
+	  	}
+	
+
+</style>
