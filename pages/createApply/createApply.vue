@@ -6,7 +6,7 @@
 										<template v-slot:right>
 											<p> {{this.ani_name}} </p>
 										</template>
-						</uni-section>
+						</uni-section>	
 						
 						<uni-forms ref="baseForm" :modelValue="baseFormData">
 							<uni-forms-item label="姓名" required>
@@ -19,6 +19,7 @@
 				</view>
 		</uni-section>
 		
+		
 		<button type="primary" @click="submitForm()">提交</button>
 	</view>
 </template>
@@ -29,6 +30,7 @@
 		data() {
 			return {
 				ani_name: "",
+				id: 0,
 				baseFormData: {
 					user_name: "",
 					content: "",
@@ -39,10 +41,38 @@
 		onLoad(option) {
 			let dataObj = JSON.parse(decodeURIComponent(option.dataObj));
 			this.ani_name = dataObj.ani_name;
+			this.id = dataObj.id;
 		},
 		methods: {
 			submitForm() {
 				console.log(this.baseFormData)
+				
+				uni.request({
+					url: "http://114.116.211.142:8080/api/animal/adopt",
+					data: {
+						animal_id: this.id,
+						user_id: uni.getStorageSync('user_id'),
+						content: this.content
+					},
+					method: 'POST',
+					header: {
+						'Authorization': "Bearer " + uni.getStorageSync('token'),
+					},
+					success: (ret) => {
+						if (ret.statusCode == 200) {
+							uni.navigateBack()
+							uni.showToast({
+								title: '领养申请成功成功',
+								duration: 1000
+							})
+						} else {
+							console.log(ret.data)
+						}
+					},
+					fail: (ret) => {
+						console.log("fail to connect!")
+					}
+				})
 			}
 		}
 	}

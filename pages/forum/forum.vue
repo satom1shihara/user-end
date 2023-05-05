@@ -8,8 +8,8 @@
 								</uni-search-bar>
 							</uni-col>
 							<uni-col :span="4">
-								<button class="mini-btn" type="default" size="mini" @click="newForum" style="margin-top: 10px;">
-									<uni-icons type="plusempty"></uni-icons>
+								<button class="mini-btn" type="default" size="mini" @click="newForum" style="margin-top: 10px; height: 40px; width: 40px;">
+									<uni-icons type="plusempty" style="margin-left: -5px;"></uni-icons>
 								</button>
 							</uni-col>
 		</uni-row>
@@ -24,7 +24,10 @@
 						<uni-list-item :title="item.title" ></uni-list-item>
 					</uni-list>
 				</template>
-				<image style="width: 100%;" :src="item.avatarUrl"></image>
+				<div v-for="pic in item.picUrl">
+					<image style="width: 100%;" :src="trans(pic)"></image>
+				</div>
+				
 				<view slot="actions" class="card-actions">
 					<button type="default" @click="onClick(item)">
 						查看详情
@@ -43,57 +46,102 @@
 		data() {
 			return {
 				gutter: 0,
+				id: 0,
 				nvueWidth: 730,
 				searchValue: "",
+				searchPic: "",
 				block: [
-					{
-						id: 1,
-						avatarUrl: "/static/logo.png",
-						user_name: "name",
-						tag: ["tag1", "tag2"],
-						content: "asjkdlfjaskldjfl;asdkfjasdlkfjasdlkcvjdslkfjasd;lkghksldnvsadovikjnoasinvironav;oasivoiawrhnvao;ighlkasdnv;asoivhj",
-						title: "title",
-						picUrl: ["/static/logo.png", "/static/logo.png"],
-						is_help: true,
-						commentList: [123, 234] // id of comment
-					},
-					{
-						id: 2,
-						avatarUrl: "/static/logo.png",
-						user_name: "name",
-						tag: ["tag1", "tag2"],
-						content: "content",
-						title: "title",
-						picUrl: ["/static/logo.png"],
-						is_help: true,
-						commentList: [123, 234] // id of comment
-					},
-					{
-						id: 3,
-						avatarUrl: "/static/logo.png",
-						user_name: "name",
-						tag: ["tag1", "tag2"],
-						content: "content",
-						title: "title",
-						picUrl: ["/static/logo.png"],
-						is_help: true,
-						commentList: [123, 234] // id of comment
-					},
-					{
-						id: 4,
-						avatarUrl: "/static/logo.png",
-						user_name: "name",
-						tag: ["tag1", "tag2"],
-						content: "content",
-						title: "title",
-						picUrl: ["/static/logo.png"],
-						is_help: true,
-						commentList: [123, 234] // id of comment
-					}
+					// {
+					// 	post_id: 1,
+					// 	tag: ["tag1", "tag2"],
+					// 	content: "asjkdlfjaskldjfl;asdkfjasdlkfjasdlkcvjdslkfjasd;lkghksldnvsadovikjnoasinvironav;oasivoiawrhnvao;ighlkasdnv;asoivhj",
+					// 	title: "title",
+					// 	picUrl: ["/static/cat1-2.jpg", "/static/cat4.jpg"],
+					// 	is_help: true,
+					// 	commentList: [123, 234] // id of comment
+					// },
+					// {
+					// 	post_id: 2,
+					// 	tag: ["tag1", "tag2"],
+					// 	content: "content",
+					// 	title: "title",
+					// 	picUrl: ["/static/cat1-2.jpg", "/static/cat4.jpg"],
+					// 	is_help: true,	
+					// 	commentList: [123, 234] // id of comment
+					// },
 				]
 			}
 		},
+		
+		onPullDownRefresh: function() {
+			this.renewPage()
+		},
+		
+		onLoad: function () {
+			this.renewPage()
+		},
+		
 		methods: {
+			trans(url) {
+				let s = "http://114.116.211.142:80/" + url.slice(8)
+				console.log(s)
+				return s	
+			},
+			renewPage() {
+				uni.request({
+					url: "http://114.116.211.142:8080/api/post/table",
+					data: {
+						page: 1,
+						limit: 100,
+						sort: "created_at"
+					},
+					header: {
+						'Authorization': "Bearer " + uni.getStorageSync('token'),
+						'Content-Type': "application/x-www-form-urlencoded",
+					},
+					
+					method: 'GET',
+					success: (res) => {
+						if (res.statusCode == 200) {
+							console.log(res.data)
+							let info = res.data.data.posts
+							this.block = []
+							for (let i = 0; i < info.length - 1; i++) {
+								let post = {
+									author_id: 0,
+									post_id: 0,
+									title: "",
+									content: "",
+									is_help: 0,
+									status: 0,
+									tag: [],
+									picUrl: [],
+									
+								}
+								post.author_id = info[i].author_id
+								post.post_id = info[i].post_id
+								post.title = info[i].title
+								post.content = info[i].content
+								post.is_help = info[i].is_help
+								post.status = info[i].status
+								post.tag = info[i].tags
+								post.picUrl = info[i].pics
+								if (post.status == 2) {
+									this.block.push(post)
+									// console.log(post)
+								}
+							}
+							console.log(this.block)
+						} else {
+							console.log(res.errMsg)
+						}
+					},
+					fail: (res) => {
+						console.log("fail to connect!")
+					}
+				})
+			},
+			
 			search(res) {
 							uni.showToast({
 								title: '搜索：' + res.value,
@@ -102,18 +150,6 @@
 						},
 			input(res) {
 							console.log('----input:', res)
-						},
-			clear(res) {
-							uni.showToast({
-								title: 'clear事件，清除值为：' + res.value,
-								icon: 'none'
-							})
-						},
-			cancel(res) {
-							uni.showToast({
-								title: '点击取消，输入值为：' + res.value,
-								icon: 'none'
-							})
 						},
 			onBackPress() {
 						plus.key.hideSoftKeybord();
@@ -128,21 +164,13 @@
 			
 			onClick(item) {
 				const dataObj = {
-						id: item.id,
-						avatarUrl: item.avatarUrl,
-						user_name: item.user_name,
-						tag: item.tag,
-						content: item.content,
-						title: item.title,
-						picUrl: item.picUrl,
-						is_help: item.is_help,
-						commentList: item.commentList
+						post_id: item.post_id,
+						author_id: item.author_id
 					};
 				uni.navigateTo({
 					url: "/pages/specificForum/specificForum?dataObj=" + encodeURIComponent(JSON.stringify(dataObj))
 				})
 			}
-			
 		}
 	}
 </script>
@@ -182,38 +210,6 @@
 	    font-size: 16px;
 	    line-height: 1.5;
 	  }
-	  
-	  .demo-uni-row {
-	  		margin-bottom: 10px;
-	  
-
-	  		display: block;
-
-	  	}
-	  
-
-	  	::v-deep .uni-row {
-	  		margin-bottom: 10px;
-	  	}
-	  
-
-	  
-	  	.demo-uni-col {
-	  		height: 36px;
-	  		border-radius: 5px;
-	  	}
-	  
-	  	.dark_deep {
-	  		background-color: #99a9bf;
-	  	}
-	  
-	  	.dark {
-	  		background-color: #d3dce6;
-	  	}
-	  
-	  	.light {
-	  		background-color: #e5e9f2;
-	  	}
 	
 
 </style>
