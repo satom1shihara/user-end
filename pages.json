@@ -13,18 +13,18 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "小动物信息管理平台",
-                "enablePullDownRefresh": false
+                "enablePullDownRefresh": true
             }
-            
+
         },
         {
             "path" : "pages/archive/archive",
             "style":                                                                                    
             {
                 "navigationBarTitleText": "小动物信息管理平台",
-                "enablePullDownRefresh": false
+                "enablePullDownRefresh": true
             }
-            
+
         },
         {
             "path" : "pages/myInfo/myInfo",
@@ -39,7 +39,7 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "我的帖子",
-                "enablePullDownRefresh": false
+                "enablePullDownRefresh": true
             }     
         },
         {
@@ -55,10 +55,10 @@
             "style" :                                                                                    
 			{
 				"navigationBarTitleText": "我的领养信息",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		}
-				
+
         ,{
             "path" : "pages/specificForum/specificForum",
             "style" :                                                                                    
@@ -67,7 +67,7 @@
                 "enablePullDownRefresh": false
             }
         },
-		
+
 		{
 		    "path" : "pages/specificArchive/specificArchive",
 		    "style" :                                                                                    
@@ -83,7 +83,7 @@
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
-            
+
         }
         ,{
             "path" : "pages/createApply/createApply",
@@ -92,7 +92,16 @@
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
-            
+
+        }
+        ,{
+            "path" : "pages/register/register",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+
         }
     ],
 	"globalStyle": {
@@ -117,13 +126,15 @@
 				"text": "论坛",
 				"iconPath": "static/c2.png",
 				"selectedIconPath": "static/c2.png"
+
 			},
 			{
 				"pagePath": "pages/myInfo/myInfo",
 				"text": "我的",
 				"iconPath": "static/c3.png",
 				"selectedIconPath": "static/c3.png"
-			}		]
+			}
+		]
 	}
-	
+
 }

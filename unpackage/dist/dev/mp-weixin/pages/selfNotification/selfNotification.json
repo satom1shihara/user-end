@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "我的通知",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "uni-notice-bar": "../../uni_modules/uni-notice-bar/components/uni-notice-bar/uni-notice-bar",
+    "uni-section": "../../uni_modules/uni-section/components/uni-section/uni-section"
+  }
+}

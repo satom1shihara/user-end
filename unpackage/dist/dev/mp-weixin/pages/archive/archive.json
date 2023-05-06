@@ -1,0 +1,17 @@
+{
+  "navigationBarTitleText": "小动物信息管理平台",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "uni-search-bar": "../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar",
+    "uni-col": "../../uni_modules/uni-row/components/uni-col/uni-col",
+    "uni-icons": "../../uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "uni-file-picker": "../../uni_modules/uni-file-picker/components/uni-file-picker/uni-file-picker",
+    "uni-row": "../../uni_modules/uni-row/components/uni-row/uni-row",
+    "uni-section": "../../uni_modules/uni-section/components/uni-section/uni-section",
+    "uni-popup": "../../uni_modules/uni-popup/components/uni-popup/uni-popup",
+    "uni-notice-bar": "../../uni_modules/uni-notice-bar/components/uni-notice-bar/uni-notice-bar",
+    "uni-list-item": "../../uni_modules/uni-list/components/uni-list-item/uni-list-item",
+    "uni-list": "../../uni_modules/uni-list/components/uni-list/uni-list",
+    "uni-card": "../../uni_modules/uni-card/components/uni-card/uni-card"
+  }
+}

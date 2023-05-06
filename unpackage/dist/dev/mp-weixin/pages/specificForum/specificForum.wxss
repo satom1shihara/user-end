@@ -1,0 +1,40 @@
+
+.profile.data-v-8ad8c482 {
+	    display: flex;
+/* 	    align-items: center; */
+	    margin-bottom: 20px;
+		height: 80%;
+		overflow: auto;
+}
+.avatar.data-v-8ad8c482 {
+		float: left;
+		display: inline-block;
+}
+.info.data-v-8ad8c482 {
+		display: inline-block;
+		float: right;
+	    flex: 1;
+}
+.name.data-v-8ad8c482 {
+	    font-size: 20px;
+	    font-weight: bold;
+	    margin-bottom: 10px;
+}
+.content.data-v-8ad8c482 {
+		  font-size: 16px;
+		    font-weight: normal;
+		    line-height: 1.5;
+		    color: #333333;
+		    text-align: left;
+		    text-decoration: none;
+		    white-space: normal;
+		    word-wrap: break-word;
+		    word-break: break-all;
+		    letter-spacing: normal;
+		    display: block;
+		    margin-top: 20px;
+		    padding: 0;
+			text-indent: 2em;
+}
+	
+

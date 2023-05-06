@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/forum/forum",
+    "pages/archive/archive",
+    "pages/myInfo/myInfo",
+    "pages/selfForum/selfForum",
+    "pages/selfNotification/selfNotification",
+    "pages/selfArchive/selfArchive",
+    "pages/specificForum/specificForum",
+    "pages/specificArchive/specificArchive",
+    "pages/createForum/createForum",
+    "pages/createApply/createApply",
+    "pages/register/register"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "小动物信息管理平台",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/archive/archive",
+        "text": "档案",
+        "iconPath": "static/c1.png",
+        "selectedIconPath": "static/c1.png"
+      },
+      {
+        "pagePath": "pages/forum/forum",
+        "text": "论坛",
+        "iconPath": "static/c2.png",
+        "selectedIconPath": "static/c2.png"
+      },
+      {
+        "pagePath": "pages/myInfo/myInfo",
+        "text": "我的",
+        "iconPath": "static/c3.png",
+        "selectedIconPath": "static/c3.png"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

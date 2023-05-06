@@ -2,7 +2,7 @@
   <view class="my-container">
     <!-- 用户未登录 -->
     <block>
-		<image class="avatar avatar-img" src="/static//homepage.jpeg" mode="scaleToFill" />
+		<image class="avatar avatar-img" src="/static/logo.png" mode="scaleToFill" />
 		<view class="login-desc">欢迎来到小动物信息交流平台</view>
 		<view class="uni-form-item uni-column">
 	  		<input placeholder="请输入账号" v-model="this.phone_number" type="number" clearable />
@@ -44,6 +44,7 @@ export default {
 							url: "/pages/myInfo/myInfo"
 						})	
 					} else {
+						console.log(ret)
 						console.log("wrong phone number or password, please try again~")
 					}
 				},

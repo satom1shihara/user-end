@@ -1,0 +1,26 @@
+/* 水平间距 */
+/* 水平间距 */
+.my-container.data-v-e4e4508d {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 25%;
+}
+.my-container .avatar-img.data-v-e4e4508d {
+  width: 200px;
+  height: 150px;
+}
+.my-container .login-desc.data-v-e4e4508d {
+  color: grey;
+  font-size: medium;
+  margin-top: 5%;
+}
+.my-container .login-btn.data-v-e4e4508d {
+  margin-top: 5%;
+  width: 85%;
+}
+.my-container .uni-column.data-v-e4e4508d {
+  color: black;
+  margin-top: 5%;
+  width: 85%;
+}
