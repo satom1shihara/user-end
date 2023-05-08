@@ -1,43 +1,92 @@
 <template>
 	<view>
-		<div style="text-align: center;">
-		  <!-- 头像 -->
-		  <img :src="avatar_url" style="height: 100px; width: 100px; " alt="http://114.116.211.142:80/user/default.png">
-		  <!-- 用户名 -->
-			<div class="name">{{ "您好, 用户" + this.user_name }}</div>
-			<!-- 修改头像 -->
-			<button class="mini-btn" type="default" size="mini" @click="changeAvatar()" style="margin-top: 10px; height: 40px; width: 150px;">
-				修改头像<uni-icons type="plusempty"></uni-icons>
+		<view class="UCenter-bg text-center">
+		  <image :src="avatar_url" class="png round animation-slide-right margin-bottom-sm margin-0" mode="scaleToFill" alt="http://114.116.211.142:80/user/default.png"></image>
+		  <!-- <image src="/static/bgpic.png" mode="scaleToFill" class="gif-wave"></image> -->
+		</view>
+		<!-- 修改头像 -->
+		<button class="cu-item arrow animation-slide-bottom" :style="[{animationDelay: '0.4s'}]"  hover-class="none" @click="changeAvatar()">
+				<view class="content" >
+					<text class="cuIcon-location text-cyan"></text>
+						<text class="text-grey">修改头像</text>
+				</view>
+		</button>
+		
+		
+		<view class="padding flex text-center text-grey bg-white shadow-warp">
+				    <view class="flex flex-sub flex-direction solid-right animation-slide-top" :style="[{animationDelay: '0.2s'}]">
+				      <view class="text-xl text-orange">{{this.user_name}}</view>
+					  <view class="margin-top-sm"><text class="cuIcon-people"></text> 用户</view>
+		</view>
+				    
+		<view class="flex flex-sub flex-direction animation-slide-top" :style="[{animationDelay: '0.2s'}]">
+				      <view class="text-xl text-green">{{this.phone_number}}</view>
+				      <view class="margin-top-sm"><text class="cuIcon-news"></text> 手机号</view>
+				    </view>
+		</view>
+		
+		
+		<!-- list of function: -->
+		<view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
+
+			
+			<!-- 查看通知系统 -->
+			
+			<button class="cu-item arrow animation-slide-bottom" :style="[{animationDelay: '0.4s'}]"  hover-class="none"  @click="showNotifications()">
+				<view class="content" >
+					<text class="cuIcon-location text-cyan"></text>
+						<text class="text-grey">通知系统</text>
+				</view>
 			</button>
-		  <!-- 查看通知系统 -->
-		  <view slot="actions" class="card-actions" style="margin-top: 20px;">
+			
+			<!-- 查看个人帖子信息 -->
+			<button class="cu-item arrow animation-slide-bottom" :style="[{animationDelay: '0.4s'}]"  hover-class="none"  @click="showPosts()">
+				<view class="content" >
+					<text class="cuIcon-location text-cyan"></text>
+						<text class="text-grey">查看帖子信息</text>
+				</view>
+			</button>
+			<!-- 查看个人领养信息 -->
+			<button class="cu-item arrow animation-slide-bottom" :style="[{animationDelay: '0.4s'}]"  hover-class="none"  @click="showAdoptions()">
+				<view class="content" >
+					<text class="cuIcon-location text-cyan"></text>
+						<text class="text-grey">查看领养信息</text>
+				</view>
+			</button>
+			<!-- 退出登录按钮 -->
+			<button class="cu-item arrow animation-slide-bottom" :style="[{animationDelay: '0.4s'}]" style="color: red;" hover-class="none"  @click="logout()">
+				<view class="content" >
+					<text class="cuIcon-exit text-cyan"></text>
+						<text class="text-grey">退出登录</text>
+				</view>
+			</button>
+			
+			<!-- <button class="mini-btn" type="default" size="mini"  style="margin-top: 10px; height: 40px; width: 150px;">
+				修改头像<uni-icons type="plusempty"></uni-icons>
+			</button> -->
+		  
+		  <!-- <view slot="actions" class="card-actions" style="margin-top: 20px;">
 		  	<button type="default" @click="showNotifications()">
 		  		查看通知
 		  		<uni-icons type="notification-filled" size="20"></uni-icons>
 		  	</button>
-		  </view>
-		  <!-- 查看个人帖子信息 -->
-		  <view slot="actions" class="card-actions">
+		  </view> -->
+		  
+		  <!-- <view slot="actions" class="card-actions">
 		  	<button type="default" @click="showPosts()">
 		  		查看帖子
 		  		<uni-icons type="list" size="20"></uni-icons>
 		  	</button>
 		  </view>
-		  <!-- 查看个人领养信息 -->
-		  <view slot="actions" class="card-actions">
-		  	<button type="default" @click="showAdoptions()">
-		  		查看领养信息
-		  		<uni-icons type="list" size="20"></uni-icons>
-		  	</button>
-		  </view>
-		  <!-- 退出登录按钮 -->
+		  
+		  
 		  <view slot="actions" class="card-actions">
 		  	<button type="warn" @click="logout()">
 		  		退出登录
 		  		<uni-icons type="closeempty" size="20"></uni-icons>
 		  	</button>
-		  </view>
-		</div>
+		  </view> -->
+		</view>
 	</view>
 </template>
 

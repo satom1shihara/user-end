@@ -1,7 +1,5 @@
 {
   "navigationBarTitleText": "小动物信息管理平台",
   "enablePullDownRefresh": false,
-  "usingComponents": {
-    "uni-icons": "../../uni_modules/uni-icons/components/uni-icons/uni-icons"
-  }
+  "usingComponents": {}
 }

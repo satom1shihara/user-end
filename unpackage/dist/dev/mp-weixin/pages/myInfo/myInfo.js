@@ -82,42 +82,37 @@ const _sfc_main = {
     }
   }
 };
-if (!Array) {
-  const _easycom_uni_icons2 = common_vendor.resolveComponent("uni-icons");
-  _easycom_uni_icons2();
-}
-const _easycom_uni_icons = () => "../../uni_modules/uni-icons/components/uni-icons/uni-icons.js";
-if (!Math) {
-  _easycom_uni_icons();
-}
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
     a: $data.avatar_url,
-    b: common_vendor.t("您好, 用户" + this.user_name),
-    c: common_vendor.p({
-      type: "plusempty"
+    b: common_vendor.s({
+      animationDelay: "0.4s"
     }),
-    d: common_vendor.o(($event) => $options.changeAvatar()),
-    e: common_vendor.p({
-      type: "notification-filled",
-      size: "20"
+    c: common_vendor.o(($event) => $options.changeAvatar()),
+    d: common_vendor.t(this.user_name),
+    e: common_vendor.s({
+      animationDelay: "0.2s"
     }),
-    f: common_vendor.o(($event) => $options.showNotifications()),
-    g: common_vendor.p({
-      type: "list",
-      size: "20"
+    f: common_vendor.t(this.phone_number),
+    g: common_vendor.s({
+      animationDelay: "0.2s"
     }),
-    h: common_vendor.o(($event) => $options.showPosts()),
-    i: common_vendor.p({
-      type: "list",
-      size: "20"
+    h: common_vendor.s({
+      animationDelay: "0.4s"
     }),
-    j: common_vendor.o(($event) => $options.showAdoptions()),
-    k: common_vendor.p({
-      type: "closeempty",
-      size: "20"
+    i: common_vendor.o(($event) => $options.showNotifications()),
+    j: common_vendor.s({
+      animationDelay: "0.4s"
     }),
-    l: common_vendor.o(($event) => $options.logout())
+    k: common_vendor.o(($event) => $options.showPosts()),
+    l: common_vendor.s({
+      animationDelay: "0.4s"
+    }),
+    m: common_vendor.o(($event) => $options.showAdoptions()),
+    n: common_vendor.s({
+      animationDelay: "0.4s"
+    }),
+    o: common_vendor.o(($event) => $options.logout())
   };
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "E:/user-end/user-end/pages/myInfo/myInfo.vue"]]);

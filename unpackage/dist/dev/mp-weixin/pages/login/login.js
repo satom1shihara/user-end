@@ -20,9 +20,11 @@ const _sfc_main = {
         success: (ret) => {
           if (ret.statusCode == 200) {
             common_vendor.index.setStorageSync("token", ret.data.data.token);
-            common_vendor.index.redirectTo({
+            console.log("login in success!!!!");
+            common_vendor.index.switchTab({
               url: "/pages/myInfo/myInfo"
             });
+            console.log("redirect success");
           } else {
             console.log(ret);
             console.log("wrong phone number or password, please try again~");
