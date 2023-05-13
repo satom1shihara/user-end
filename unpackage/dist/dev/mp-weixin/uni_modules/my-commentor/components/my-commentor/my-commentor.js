@@ -26,8 +26,8 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
-    a: common_vendor.o([($event) => $data.plValue = $event.detail.value, (...args) => $options.changeDisabled && $options.changeDisabled(...args)]),
-    b: $data.plValue,
+    a: common_vendor.o([($event) => this.plValue = $event.detail.value, (...args) => $options.changeDisabled && $options.changeDisabled(...args)]),
+    b: this.plValue,
     c: common_vendor.o((...args) => $options.send && $options.send(...args)),
     d: $data.disabled
   };

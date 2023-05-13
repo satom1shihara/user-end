@@ -40,7 +40,7 @@ const _sfc_main = {
   methods: {
     renewPage() {
       common_vendor.index.request({
-        url: "http://114.116.211.142:8080/api/animal/adopt/table",
+        url: "https://anitu2.2022martu1.cn:8080/api/animal/adopt/table",
         data: {
           page: 1,
           limit: 100,

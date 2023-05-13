@@ -20,7 +20,7 @@ const _sfc_main = {
   methods: {
     submitForm() {
       common_vendor.index.request({
-        url: "http://114.116.211.142:8080/api/user/register",
+        url: "https://anitu2.2022martu1.cn:8080/api/user/register",
         data: this.baseFormData,
         method: "POST",
         success: (ret) => {

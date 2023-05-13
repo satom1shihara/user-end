@@ -1,11 +1,11 @@
 <template>
 	<view>			
-			<uni-card :title="this.user_name"  :thumbnail="this.avatarUrl" :extra="this.title">
+			<uni-card :title="this.user_name" :thumbnail="this.avatarUrl" :extra="this.title" is-full="true">
 				
 				<div class="list-container">
 				  <ul style="list-style: none;">
 					  
-					<uni-row class="demo-uni-row" :gutter="gutter" :width="nvueWidth">
+					<uni-row class="demo-uni-row">
 						<!-- tags -->
 						<uni-col :span="20">
 							<uni-icons type="fire-filled" size="20"></uni-icons>
@@ -32,6 +32,8 @@
 					<img :src="trans(it)" style="text-align: center; height: 200px; width: 200px;">
 				</div>
 				
+				
+				
 				<uni-section title="评论区" type="line">
 					<div v-for="item in comments">
 						<uni-card :title="item.name"  :extra="item.time" :thumbnail="item.avatar">
@@ -43,7 +45,7 @@
 					</div>
 				</uni-section>
 
-				<mycommentor></mycommentor>>
+				<mycommentor style="margin-bottom: 5%;"></mycommentor>>
 			</uni-card>
 	</view>
 </template>
@@ -59,7 +61,7 @@
 			return {
 				post_id: 1,
 				author_id: 0,
-				avatarUrl: "",
+				avatarUrl: "/static/avatar.png",
 				user_name: "name",
 				tag: ["tag1", "tag2"],
 				content: "content",
@@ -68,24 +70,24 @@
 				commentList: ["123", "3523"],
 				is_help: true,
 				comments: [
-					// {
-					// 	avatar: "/static/logo.png",
-					// 	name: "name",
-					// 	text: "asjdoasjdsdjkasdasdasd",
-					// 	time: "12.31"
-					// },
-					// {
-					// 	avatar: "/static/logo.png",
-					// 	name: "name",
-					// 	text: "asjdoasjdsdjkasdasdasd",
-					// 	time: "12.31"
-					// },
-					// {
-					// 	avatar: "/static/logo.png",
-					// 	name: "name",
-					// 	text: "asjdoasjdsdjkasdasdasd",
-					// 	time: "12.31"
-					// }
+					{
+						avatar: "/static/logo.png",
+						name: "name",
+						text: "asjdoasjdsdjkasdasdasd",
+						time: "12.31"
+					},
+					{
+						avatar: "/static/logo.png",
+						name: "name",
+						text: "asjdoasjdsdjkasdasdasd",
+						time: "12.31"
+					},
+					{
+						avatar: "/static/logo.png",
+						name: "name",
+						text: "asjdoasjdsdjkasdasdasd",
+						time: "12.31"
+					}
 				]
 			}
 		},
@@ -99,13 +101,13 @@
 		},
 		methods: {
 			trans(url) {
-				let s = "http://114.116.211.142:80/" + url.slice(8)
+				let s = "https://anitu2.2022martu1.cn:8080/" + url.slice(8)
 				console.log(s)
 				return s
 			},
 			getDetail() {
 				uni.request({
-					url: "http://114.116.211.142:8080/api/post/detail",
+					url: "https://anitu2.2022martu1.cn:8080/api/post/detail",
 					data: {
 						post_id: this.post_id,
 						user_id: this.author_id
@@ -126,7 +128,7 @@
 							this.picUrl = info.post.pics[0].split(',')
 							console.log(info.post.pics)
 							this.user_name = info.user.user_id
-							this.avatarUrl = "http://114.116.211.142:80/user/" + info.user.avatar
+							this.avatarUrl = "https://anitu2.2022martu1.cn:8080/user/" + info.user.avatar
 						} else {
 							console.log(res.errMsg)
 						}

@@ -48,7 +48,7 @@
 				console.log(this.baseFormData)
 				
 				uni.request({
-					url: "http://114.116.211.142:8080/api/animal/adopt",
+					url: "https://anitu2.2022martu1.cn:8080/api/animal/adopt",
 					data: {
 						animal_id: this.id,
 						user_id: uni.getStorageSync('user_id'),

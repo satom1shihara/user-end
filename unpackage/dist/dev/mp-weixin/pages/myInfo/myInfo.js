@@ -5,57 +5,84 @@ const _sfc_main = {
     return {
       user_id: 1,
       user_name: "asja",
-      avatar_url: "sb.png",
+      avatar_url: "/user/default.png",
       phone_number: "1231245"
     };
   },
   onLoad: function(options) {
-    common_vendor.index.request({
-      url: "http://114.116.211.142:8080/api/user/info",
-      data: {},
-      header: {
-        "Authorization": "Bearer " + common_vendor.index.getStorageSync("token")
-      },
-      method: "GET",
-      success: (ret) => {
-        if (ret.statusCode == 200) {
-          let info = ret.data.data.user;
-          common_vendor.index.setStorageSync("user_id", info.user_id);
-          this.user_id = info.user_id;
-          this.user_name = info.user_name;
-          this.phone_number = info.phone_number;
-          this.avatar_url = "http://114.116.211.142:80/user/" + info.avatar;
-        } else {
-          console.log(ret.errMsg);
-        }
-      },
-      fail: (ret) => {
-        console.log("fail to connect!");
-      }
-    });
+    this.renewPage();
+  },
+  onPullDownRefresh: function() {
+    this.renewPage();
   },
   methods: {
+    renewPage() {
+      common_vendor.index.request({
+        url: "https://anitu2.2022martu1.cn:8080/api/user/info",
+        data: {},
+        header: {
+          "Authorization": "Bearer " + common_vendor.index.getStorageSync("token")
+        },
+        method: "GET",
+        success: (ret) => {
+          if (ret.statusCode == 200) {
+            let info = ret.data.data.user;
+            common_vendor.index.setStorageSync("user_id", info.user_id);
+            this.user_id = info.user_id;
+            this.user_name = info.user_name;
+            this.phone_number = info.phone_number;
+            this.avatar_url = "https://anitu2.2022martu1.cn" + info.avatar;
+          } else {
+            console.log(ret.errMsg);
+          }
+        },
+        fail: (ret) => {
+          console.log("fail to connect!");
+        }
+      });
+    },
     changeAvatar() {
       common_vendor.index.chooseImage({
         success: (chooseImageRes) => {
           chooseImageRes.tempFilePaths;
           common_vendor.index.uploadFile({
-            url: "http://114.116.211.142:8080/api/user/update/avatar",
+            url: "https://anitu2.2022martu1.cn:8080/api/pic/upload",
             filePath: chooseImageRes.tempFilePaths[0],
             name: "pic",
             header: {
               "Authorization": "Bearer " + common_vendor.index.getStorageSync("token")
             },
             formData: {
-              user_id: common_vendor.index.getStorageInfoSync("user_id")
+              "opt": 2
             },
             success: (uploadFileRes) => {
               if (uploadFileRes.statusCode == 200) {
-                this.avatar_url = uploadFileRes.data.path;
-              } else {
                 console.log(uploadFileRes.data);
+                let obj = JSON.parse(uploadFileRes.data);
+                this.updateUrl(obj.path);
+              } else {
+                console.log(uploadFileRes);
               }
             }
+          });
+        }
+      });
+    },
+    updateUrl(options) {
+      common_vendor.index.request({
+        url: "https://anitu2.2022martu1.cn:8080/api/user/update/avatar",
+        data: {
+          "user_id": common_vendor.index.getStorageSync("user_id"),
+          "new_avatar": options
+        },
+        header: {
+          "Authorization": "Bearer " + common_vendor.index.getStorageSync("token")
+        },
+        method: "POST",
+        success: (res) => {
+          common_vendor.index.showToast({
+            title: "修改成功",
+            duration: 1e3
           });
         }
       });
@@ -85,18 +112,18 @@ const _sfc_main = {
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
     a: $data.avatar_url,
-    b: common_vendor.s({
-      animationDelay: "0.4s"
+    b: common_vendor.t(this.user_name),
+    c: common_vendor.s({
+      animationDelay: "0.2s"
     }),
-    c: common_vendor.o(($event) => $options.changeAvatar()),
-    d: common_vendor.t(this.user_name),
+    d: common_vendor.t(this.phone_number),
     e: common_vendor.s({
       animationDelay: "0.2s"
     }),
-    f: common_vendor.t(this.phone_number),
-    g: common_vendor.s({
-      animationDelay: "0.2s"
+    f: common_vendor.s({
+      animationDelay: "0.4s"
     }),
+    g: common_vendor.o(($event) => $options.changeAvatar()),
     h: common_vendor.s({
       animationDelay: "0.4s"
     }),

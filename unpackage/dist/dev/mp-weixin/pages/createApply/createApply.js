@@ -20,7 +20,7 @@ const _sfc_main = {
     submitForm() {
       console.log(this.baseFormData);
       common_vendor.index.request({
-        url: "http://114.116.211.142:8080/api/animal/adopt",
+        url: "https://anitu2.2022martu1.cn:8080/api/animal/adopt",
         data: {
           animal_id: this.id,
           user_id: common_vendor.index.getStorageSync("user_id"),

@@ -1,16 +1,10 @@
 <template>
 	<view>
 		<view class="UCenter-bg text-center">
-		  <image :src="avatar_url" class="png round animation-slide-right margin-bottom-sm margin-0" mode="scaleToFill" alt="http://114.116.211.142:80/user/default.png"></image>
-		  <!-- <image src="/static/bgpic.png" mode="scaleToFill" class="gif-wave"></image> -->
+		  <image :src="avatar_url" class="png round animation-slide-right margin-bottom-sm margin-0" mode="scaleToFill" alt="http://114.116.211.142:80/user/default.png" ></image>
+		  <!-- <image src="/static/bgpic.png" mode="scaleToFill" class="bg-img"></image> -->
 		</view>
-		<!-- 修改头像 -->
-		<button class="cu-item arrow animation-slide-bottom" :style="[{animationDelay: '0.4s'}]"  hover-class="none" @click="changeAvatar()">
-				<view class="content" >
-					<text class="cuIcon-location text-cyan"></text>
-						<text class="text-grey">修改头像</text>
-				</view>
-		</button>
+		
 		
 		
 		<view class="padding flex text-center text-grey bg-white shadow-warp">
@@ -21,20 +15,26 @@
 				    
 		<view class="flex flex-sub flex-direction animation-slide-top" :style="[{animationDelay: '0.2s'}]">
 				      <view class="text-xl text-green">{{this.phone_number}}</view>
-				      <view class="margin-top-sm"><text class="cuIcon-news"></text> 手机号</view>
+				      <view class="margin-top-sm"><text class="cuIcon-mobile"></text> 手机号</view>
 				    </view>
 		</view>
 		
 		
 		<!-- list of function: -->
 		<view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
-
+				<!-- 修改头像 -->
+				<button class="cu-item arrow animation-slide-bottom" :style="[{animationDelay: '0.4s'}]"  hover-class="none" @click="changeAvatar()">
+						<view class="content" >
+							<text class="cuIcon-edit text-cyan"></text>
+								<text class="text-grey">修改头像</text>
+						</view>
+				</button>
 			
 			<!-- 查看通知系统 -->
 			
 			<button class="cu-item arrow animation-slide-bottom" :style="[{animationDelay: '0.4s'}]"  hover-class="none"  @click="showNotifications()">
 				<view class="content" >
-					<text class="cuIcon-location text-cyan"></text>
+					<text class="cuIcon-notice text-cyan"></text>
 						<text class="text-grey">通知系统</text>
 				</view>
 			</button>
@@ -42,14 +42,14 @@
 			<!-- 查看个人帖子信息 -->
 			<button class="cu-item arrow animation-slide-bottom" :style="[{animationDelay: '0.4s'}]"  hover-class="none"  @click="showPosts()">
 				<view class="content" >
-					<text class="cuIcon-location text-cyan"></text>
+					<text class="cuIcon-post text-cyan"></text>
 						<text class="text-grey">查看帖子信息</text>
 				</view>
 			</button>
 			<!-- 查看个人领养信息 -->
 			<button class="cu-item arrow animation-slide-bottom" :style="[{animationDelay: '0.4s'}]"  hover-class="none"  @click="showAdoptions()">
 				<view class="content" >
-					<text class="cuIcon-location text-cyan"></text>
+					<text class="cuIcon-deliver text-cyan"></text>
 						<text class="text-grey">查看领养信息</text>
 				</view>
 			</button>
@@ -97,15 +97,23 @@
 			return {
 				user_id: 1,
 				user_name: "asja",
-				avatar_url: "sb.png",
+				avatar_url: "/user/default.png",
 				phone_number: "1231245",
 			}
 		},
 		
 		onLoad: function (options) {
-			
-			uni.request({
-				url: "http://114.116.211.142:8080/api/user/info",
+			this.renewPage()
+		},
+		
+		onPullDownRefresh: function() {
+			this.renewPage()
+		},
+		
+		methods: {
+			renewPage() {
+				uni.request({
+				url: "https://anitu2.2022martu1.cn:8080/api/user/info", 
 				data: {
 					
 				},
@@ -120,7 +128,7 @@
 						this.user_id = info.user_id
 						this.user_name = info.user_name
 						this.phone_number = info.phone_number	
-						this.avatar_url = "http://114.116.211.142:80/user/" + info.avatar	
+						this.avatar_url = "https://anitu2.2022martu1.cn" + info.avatar	
 					} else {
 						console.log(ret.errMsg)
 					}
@@ -130,33 +138,58 @@
 				}
 			})
 		},
-		
-		methods: {
+			
+			
 			changeAvatar() {
 				uni.chooseImage({
 					success: (chooseImageRes) => {
 						const tempFilePaths = chooseImageRes.tempFilePaths;
 							// let filename = toString(new Date()) + toString(uni.getStorageSync('user_id'));
 							uni.uploadFile({
-								url: "http://114.116.211.142:8080/api/user/update/avatar",
+								url: "https://anitu2.2022martu1.cn:8080/api/pic/upload",
 								filePath: chooseImageRes.tempFilePaths[0],
 								name: "pic",
 								header: {
-									'Authorization': "Bearer " + uni.getStorageSync('token')
+									'Authorization': "Bearer " + uni.getStorageSync('token'),
+									
 								},
 								formData: {
-									user_id: uni.getStorageInfoSync('user_id')
+									'opt': 2
 								},
 								success: (uploadFileRes) => {
 									if (uploadFileRes.statusCode == 200) {
-										this.avatar_url = uploadFileRes.data.path
-									} else {
 										console.log(uploadFileRes.data)
+										let obj = JSON.parse(uploadFileRes.data)
+										this.updateUrl(obj.path)
+									} else {
+										console.log(uploadFileRes)
 									}
 								},
 							})
-						}
+					}
+					
 				});
+				
+			},
+			
+			updateUrl(options) {
+				uni.request({
+					url: "https://anitu2.2022martu1.cn:8080/api/user/update/avatar",
+					data: {
+						"user_id": uni.getStorageSync('user_id'),
+						"new_avatar": options
+					},
+					header: {
+						'Authorization': "Bearer " + uni.getStorageSync('token')
+					},
+					method: 'POST',
+					success: (res) => {
+						uni.showToast({
+							title: '修改成功',
+							duration: 1000
+						})
+					}
+				})
 			},
 			
 			showNotifications() {
@@ -188,6 +221,12 @@
 </script>
 
 <style>
-
+	.body{
+		background:url("/static/loginbg.png");
+		width:100%;
+		height:100%;
+		position:fixed;
+		background-size:100% 100%;
+	}
 
 </style>

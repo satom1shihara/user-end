@@ -6,9 +6,6 @@
     "uni-col": "../../uni_modules/uni-row/components/uni-col/uni-col",
     "uni-icons": "../../uni_modules/uni-icons/components/uni-icons/uni-icons",
     "uni-row": "../../uni_modules/uni-row/components/uni-row/uni-row",
-    "uni-notice-bar": "../../uni_modules/uni-notice-bar/components/uni-notice-bar/uni-notice-bar",
-    "uni-list-item": "../../uni_modules/uni-list/components/uni-list-item/uni-list-item",
-    "uni-list": "../../uni_modules/uni-list/components/uni-list/uni-list",
     "uni-card": "../../uni_modules/uni-card/components/uni-card/uni-card"
   }
 }

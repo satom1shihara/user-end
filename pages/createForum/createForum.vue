@@ -64,15 +64,15 @@
 						for (let i = 0; i < chooseImageRes.tempFilePaths.length; i++) {
 							console.log(chooseImageRes.tempFilePaths[i])
 							uni.uploadFile({
-								url: "http://114.116.211.142:8080/api/pic/upload",
+								url: "https://anitu2.2022martu1.cn:8080/api/pic/upload",
 								filePath: chooseImageRes.tempFilePaths[i],
 								name: "pic",
 								header: {
 									'Authorization': "Bearer " + uni.getStorageSync('token'),
-									"opt": 0
+									
 								},
 								formData: {
-									
+									"opt": 0
 								},
 								success: (uploadFileRes) => {
 									if (uploadFileRes.statusCode == 200) {
@@ -94,7 +94,7 @@
 			submitForm() {
 				
 				uni.request({
-					url: "http://114.116.211.142:8080/api/post",
+					url: "https://anitu2.2022martu1.cn:8080/api/post",
 					data: {
 								author_id: uni.getStorageSync('user_id'),
 								title: this.baseFormData.title,

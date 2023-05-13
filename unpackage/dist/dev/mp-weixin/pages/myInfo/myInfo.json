@@ -1,5 +1,5 @@
 {
   "navigationBarTitleText": "小动物信息管理平台",
-  "enablePullDownRefresh": false,
+  "enablePullDownRefresh": true,
   "usingComponents": {}
 }

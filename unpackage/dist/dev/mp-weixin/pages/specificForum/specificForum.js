@@ -9,7 +9,7 @@ const _sfc_main = {
     return {
       post_id: 1,
       author_id: 0,
-      avatarUrl: "",
+      avatarUrl: "/static/avatar.png",
       user_name: "name",
       tag: ["tag1", "tag2"],
       content: "content",
@@ -18,24 +18,24 @@ const _sfc_main = {
       commentList: ["123", "3523"],
       is_help: true,
       comments: [
-        // {
-        // 	avatar: "/static/logo.png",
-        // 	name: "name",
-        // 	text: "asjdoasjdsdjkasdasdasd",
-        // 	time: "12.31"
-        // },
-        // {
-        // 	avatar: "/static/logo.png",
-        // 	name: "name",
-        // 	text: "asjdoasjdsdjkasdasdasd",
-        // 	time: "12.31"
-        // },
-        // {
-        // 	avatar: "/static/logo.png",
-        // 	name: "name",
-        // 	text: "asjdoasjdsdjkasdasdasd",
-        // 	time: "12.31"
-        // }
+        {
+          avatar: "/static/logo.png",
+          name: "name",
+          text: "asjdoasjdsdjkasdasdasd",
+          time: "12.31"
+        },
+        {
+          avatar: "/static/logo.png",
+          name: "name",
+          text: "asjdoasjdsdjkasdasdasd",
+          time: "12.31"
+        },
+        {
+          avatar: "/static/logo.png",
+          name: "name",
+          text: "asjdoasjdsdjkasdasdasd",
+          time: "12.31"
+        }
       ]
     };
   },
@@ -49,13 +49,13 @@ const _sfc_main = {
   },
   methods: {
     trans(url) {
-      let s = "http://114.116.211.142:80/" + url.slice(8);
+      let s = "https://anitu2.2022martu1.cn:8080/" + url.slice(8);
       console.log(s);
       return s;
     },
     getDetail() {
       common_vendor.index.request({
-        url: "http://114.116.211.142:8080/api/post/detail",
+        url: "https://anitu2.2022martu1.cn:8080/api/post/detail",
         data: {
           post_id: this.post_id,
           user_id: this.author_id
@@ -75,7 +75,7 @@ const _sfc_main = {
             this.picUrl = info.post.pics[0].split(",");
             console.log(info.post.pics);
             this.user_name = info.user.user_id;
-            this.avatarUrl = "http://114.116.211.142:80/user/" + info.user.avatar;
+            this.avatarUrl = "https://anitu2.2022martu1.cn:8080/user/" + info.user.avatar;
           } else {
             console.log(res.errMsg);
           }
@@ -138,17 +138,13 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     h: common_vendor.p({
       span: 4
     }),
-    i: common_vendor.p({
-      gutter: _ctx.gutter,
-      width: _ctx.nvueWidth
-    }),
-    j: common_vendor.t(this.content),
-    k: common_vendor.f(this.picUrl, (it, index, i0) => {
+    i: common_vendor.t(this.content),
+    j: common_vendor.f(this.picUrl, (it, index, i0) => {
       return {
         a: $options.trans(it)
       };
     }),
-    l: common_vendor.f($data.comments, (item, k0, i0) => {
+    k: common_vendor.f($data.comments, (item, k0, i0) => {
       return {
         a: common_vendor.t(item.text),
         b: "8ad8c482-9-" + i0 + ",8ad8c482-8",
@@ -159,14 +155,15 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         })
       };
     }),
-    m: common_vendor.p({
+    l: common_vendor.p({
       title: "评论区",
       type: "line"
     }),
-    n: common_vendor.p({
+    m: common_vendor.p({
       title: this.user_name,
       thumbnail: this.avatarUrl,
-      extra: this.title
+      extra: this.title,
+      ["is-full"]: "true"
     })
   });
 }

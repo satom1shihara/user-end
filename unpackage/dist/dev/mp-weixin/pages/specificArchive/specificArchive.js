@@ -1,10 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-const mycommentor = () => "../../uni_modules/my-commentor/components/my-commentor/my-commentor.js";
 const _sfc_main = {
-  components: {
-    mycommentor
-  },
   data() {
     return {
       gutter: 0,
@@ -54,7 +50,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     a: common_vendor.t(this.content),
     b: common_vendor.f(this.picUrl, (it, index, i0) => {
       return {
-        a: it
+        a: "https://anitu2.2022martu1.cn" + it
       };
     }),
     c: common_vendor.p({

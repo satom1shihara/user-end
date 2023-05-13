@@ -1497,7 +1497,7 @@ function populateParameters(fromRes, toRes) {
   let _SDKVersion = SDKVersion;
   const hostLanguage = language.replace(/_/g, "-");
   const parameters = {
-    appId: "",
+    appId: "__UNI__F08BB2D",
     appName: "user-end",
     appVersion: "1.0.0",
     appVersionCode: "100",
@@ -1641,7 +1641,7 @@ const getAppBaseInfo = {
       hostName: _hostName,
       hostSDKVersion: SDKVersion,
       hostTheme: theme,
-      appId: "",
+      appId: "__UNI__F08BB2D",
       appName: "user-end",
       appVersion: "1.0.0",
       appVersionCode: "100",
@@ -7089,7 +7089,7 @@ const pages = [
     path: "pages/myInfo/myInfo",
     style: {
       navigationBarTitleText: "小动物信息管理平台",
-      enablePullDownRefresh: false
+      enablePullDownRefresh: true
     }
   },
   {
@@ -7476,7 +7476,7 @@ function S(e2) {
 const b = true, k = "mp-weixin", T = S([]), P = k, A = S(""), E = S("[]") || [];
 let x = "";
 try {
-  x = "";
+  x = "__UNI__F08BB2D";
 } catch (e2) {
 }
 let R = {};

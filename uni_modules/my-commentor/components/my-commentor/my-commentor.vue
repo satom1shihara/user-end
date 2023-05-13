@@ -2,7 +2,7 @@
 	<view>
 		<view class="plBox">
 			<textarea auto-height="true" maxlength="-1" :show-confirm-bar="false" cursor-spacing="100" fixed="true"
-				placeholder="在这里发表评论" v-model="plValue" @input="changeDisabled"></textarea>
+				placeholder="在这里发表评论" v-model="this.plValue" @input="changeDisabled"></textarea>
 			<button plain="true" @click="send" :disabled="disabled">发送</button>
 		</view>
 	</view>

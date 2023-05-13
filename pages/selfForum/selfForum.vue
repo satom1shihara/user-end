@@ -3,14 +3,9 @@
 		<ul>
 			<div v-for="(item, index) in block">
 				
-				<uni-card title="基础卡片" sub-title="副标题" extra="额外信息" padding="10px 0" :thumbnail="item.avatarUrl" >
-					<template v-slot:title>
-						<uni-list>
-							<uni-list-item  :title="item.title" ></uni-list-item>
-						</uni-list>
-					</template>
+				<uni-card :title="item.user_name" :sub-title="item.time" :extra="this.transformHelp(item.is_help)" :thumbnail="transformUrl(item.avatar)" padding="10px 0" @click="onClick(item)">
 					<div v-for="pic in item.picUrl">
-						<image style="width: 100%;" :src="trans(pic)"></image>
+						<image style="width: 100%;" :src="transformUrl(pic)"></image>
 					</div>
 					<view slot="actions" class="card-actions">
 						<uni-row class="demo-uni-row">
@@ -42,6 +37,10 @@
 		},
 		
 		onPullDownRefresh: function() {
+			console.log('refresh');
+				setTimeout(function () {
+					uni.stopPullDownRefresh();
+				}, 1000);
 			this.renewPage()
 		},
 		
@@ -74,10 +73,13 @@
 			}
 		},
 		methods: {
-			trans(url) {
-				let s = "http://114.116.211.142:80/" + url.slice(8)
-				console.log(s)
-				return s
+			
+			transformUrl(url) {
+				return "https://anitu2.2022martu1.cn" + url
+			},
+			
+			transformHelp(item) {
+				return item.is_help == true ? "求助" : "非求助"
 			},
 			onClick(item) {
 				const dataObj = {
@@ -92,7 +94,7 @@
 				console.log("delete this forum");
 				console.log(index);
 				uni.request({
-					url: "http://114.116.211.142:8080/api/post",
+					url: "https://anitu2.2022martu1.cn:8080/api/post",
 					data: {
 						post_id: this.block[index].post_id,
 						user_id: uni.getStorageSync('user_id')
@@ -120,7 +122,7 @@
 			
 			renewPage() {
 				uni.request({
-					url: "http://114.116.211.142:8080/api/post/table",
+					url: "https://anitu2.2022martu1.cn:8080/api/post/table",
 					data: {
 						page: 1,
 						limit: 100,
@@ -132,43 +134,77 @@
 					},
 					
 					method: 'GET',
-					success: (res) => {
+					success: function (res) {
 						if (res.statusCode == 200) {
 							console.log(res.data)
 							let info = res.data.data.posts
 							this.block = []
-							for (let i = 0; i < info.length - 1; i++) {
+							console.log("info=" + info)
+							if (info == null) {
+								return
+							}
+							for (let i = 0; i < info.length; i++) {
 								let post = {
+									user_name: "",
+									time: "",
+									avatar: "",
 									author_id: 0,
 									post_id: 0,
 									title: "",
 									content: "",
 									is_help: 0,
-									status: 0,
 									tag: [],
 									picUrl: [],
 								}
+								
 								post.author_id = info[i].author_id
-								post.post_id = info[i].post_id
-								post.title = info[i].title
-								post.content = info[i].content
-								post.is_help = info[i].is_help
-								post.status = info[i].status
-								post.tag = info[i].tags
-								post.picUrl = info[i].pics
-								// console.log(info[i].author_id)
-								// console.log( uni.getStorageSync('user_id'))
-								if (post.status != 2) continue
-								if (info[i].author_id != uni.getStorageSync('user_id')) continue
+								console.log("11")
+								uni.request({
+									url: "https://anitu2.2022martu1.cn:8080/api/user/view",
+									data: {
+										user_id: post.author_id
+									},
+									header: {
+										'Authorization': "Bearer " + uni.getStorageSync('token'),
+									},
+									method: 'GET',
+									success: function(res) {
+										if (res.statusCode == 200) {
+											console.log("33")
+											post.user_name = res.data.name
+											post.avatar = res.data.avatar
+											console.log("name=" + post.user_name)
+											console.log("avatar=" + post.avatar)
+											post.time = info[i].time.substring(0, 10)
+											console.log("time=" + post.time)
+											post.post_id = info[i].post_id
+											post.title = info[i].title
+											post.content = info[i].content
+											post.is_help = info[i].is_help
+											post.status = info[i].status
+											post.tag = info[i].tags
+											post.picUrl = info[i].pics
+											console.log("post=" + post)
+											console.log("111")
+											if (post.status == 2 && post.author_id == uni.getStorageSync('user_id')) {
+												this.block.push(post)
+												// console.log(post)
+											}
+											console.log("33")
+										} else {
+											console.log(res.errMsg)
+										}
+									}.bind(this),
+								});
 								
 								
-								this.block.push(post)
+								
 							}
-							console.log(this.block)
 						} else {
 							console.log(res.errMsg)
 						}
-					},
+						this.$forceUpdate()
+					}.bind(this),
 					fail: (res) => {
 						console.log("fail to connect!")
 					}

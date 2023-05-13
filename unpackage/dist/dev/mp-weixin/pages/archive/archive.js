@@ -44,6 +44,9 @@ const _sfc_main = {
     this.renewPage();
   },
   methods: {
+    transformUrl(url) {
+      return "https://anitu2.2022martu1.cn" + url;
+    },
     search(res) {
       common_vendor.index.showToast({
         title: "搜索：" + res.value,
@@ -72,6 +75,7 @@ const _sfc_main = {
       console.log("creating new forum");
     },
     onClick(item) {
+      console.log(item);
       const dataObj = {
         id: item.id,
         sex: item.sex,
@@ -97,7 +101,7 @@ const _sfc_main = {
     },
     renewPage() {
       common_vendor.index.request({
-        url: "http://114.116.211.142:8080/api/animal/table",
+        url: "https://anitu2.2022martu1.cn:8080/api/animal/table",
         data: {
           page: 1,
           limit: 100,
@@ -119,7 +123,7 @@ const _sfc_main = {
                 sex: "",
                 content: "",
                 name: "",
-                picUrl: ["/static/cat1-2.jpg"],
+                picUrl: [],
                 status: 0
               };
               post.id = info[i].animal_id;
@@ -127,6 +131,7 @@ const _sfc_main = {
               post.content = info[i].content;
               post.name = info[i].animal_name;
               post.status = info[i].status;
+              post.picUrl = info[i].pics;
               this.block.push(post);
             }
             console.log(this.block);
@@ -230,7 +235,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
           title: item.name
         }),
         c: "1ed2b163-13-" + i0 + "," + ("1ed2b163-12-" + i0),
-        d: item.picUrl[0],
+        d: $options.transformUrl(item.picUrl[0]),
         e: "1ed2b163-15-" + i0 + "," + ("1ed2b163-12-" + i0),
         f: common_vendor.o(($event) => $options.onClick(item)),
         g: "1ed2b163-12-" + i0

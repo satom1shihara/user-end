@@ -39,7 +39,7 @@
 						<uni-list-item  :title="item.name" ></uni-list-item>
 					</uni-list>
 				</template>
-				<image style="width: 100%;" :src="item.picUrl[0]"></image>
+				<image style="width: 100%;" :src="transformUrl(item.picUrl[0])"></image>
 				<view slot="actions" class="card-actions">
 					<button type="default" @click="onClick(item)">
 						查看详情
@@ -101,6 +101,9 @@
 		},
 		
 		methods: {
+			transformUrl(url) {
+				return "https://anitu2.2022martu1.cn" + url
+			},
 			search(res) {
 							uni.showToast({
 								title: '搜索：' + res.value,
@@ -132,6 +135,7 @@
 			},
 			
 			onClick(item) {
+				console.log(item)
 				const dataObj = {
 						id: item.id,
 						sex: item.sex,
@@ -150,10 +154,10 @@
 			},
 			
 			open() {
-						this.$refs.popup.open('top')
+				this.$refs.popup.open('top')
 			},
 			close() {
-						this.$refs.popup.close()
+				this.$refs.popup.close()
 			},
 			
 			ensure() {
@@ -162,7 +166,7 @@
 			
 			renewPage() {
 				uni.request({
-					url: "http://114.116.211.142:8080/api/animal/table",
+					url: "https://anitu2.2022martu1.cn:8080/api/animal/table",
 					data: {
 						page: 1,
 						limit: 100,
@@ -185,7 +189,7 @@
 									sex: "",
 									content: "",
 									name: "",
-									picUrl: ["/static/cat1-2.jpg"],
+									picUrl: [],
 									status: 0,	
 								}
 								post.id = info[i].animal_id
@@ -193,6 +197,7 @@
 								post.content = info[i].content
 								post.name = info[i].animal_name
 								post.status = info[i].status
+								post.picUrl = info[i].pics
 								this.block.push(post)
 									// console.log(post)
 							}

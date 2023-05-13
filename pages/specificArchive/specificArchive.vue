@@ -5,7 +5,7 @@
 				<p class="content"> {{this.content}} </p>
 				
 				<div v-for="(it, index) in this.picUrl">
-					<img :src="it" style="text-align: center; height: 200px; width: 200px;">
+					<img :src=" 'https://anitu2.2022martu1.cn' + it" style="text-align: center; height: 200px; width: 200px;">
 				</div>
 				
 				<view slot="actions" class="card-actions">
@@ -20,11 +20,7 @@
 </template>
 
 <script>
-	import mycommentor from "/uni_modules/my-commentor/components/my-commentor/my-commentor.vue"
 	export default {
-		components: {
-			mycommentor
-		},
 		
 		data() {
 			return {
