@@ -3,9 +3,9 @@
 		<ul>
 			<div v-for="(item, index) in block">
 				
-				<uni-card :title="item.user_name" :sub-title="item.time" :extra="this.transformHelp(item.is_help)" :thumbnail="transformUrl(item.avatar)" padding="10px 0" @click="onClick(item)">
+				<uni-card :title="item.user_name" :sub-title="item.time" :extra="item.title" :thumbnail="transformUrl(item.avatar)" padding="10px 0" @click="onClick(item)">
 					<div v-for="pic in item.picUrl">
-						<image style="width: 100%;" :src="transformUrl(pic)"></image>
+						<image style="width: 100%;" :src="transformUrl(pic)" mode="aspectFill"></image>
 					</div>
 					<view slot="actions" class="card-actions">
 						<uni-row class="demo-uni-row">

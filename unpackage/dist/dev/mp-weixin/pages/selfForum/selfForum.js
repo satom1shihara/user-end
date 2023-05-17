@@ -202,7 +202,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         k: common_vendor.p({
           title: item.user_name,
           ["sub-title"]: item.time,
-          extra: this.transformHelp(item.is_help),
+          extra: item.title,
           thumbnail: $options.transformUrl(item.avatar),
           padding: "10px 0"
         })

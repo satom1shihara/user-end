@@ -4,7 +4,7 @@
 			<!-- 用户未登录 -->
 			<block>
 				<image class=" avatar-img animation-fade" :style="[{animationDelay: '0.1s'}]" src="/static/frontPage.png" mode="scaleToFill" />
-				<view class="login-desc animation-reverse" :style="[{animationDelay: '0.1s'}]">欢迎来到小动物信息交流平台</view>
+				<view class="animation-reverse text-xl margin-top" :style="[{animationDelay: '0.1s'}]">欢迎来到小动物信息交流平台</view>
 				
 				<view class="cu-form-group margin-top  shadow-warp" :class="[shape=='round'?'round':'']">
 					<view class="title"><text class="cuIcon-people margin-right-xs"></text>手机号:</view>
@@ -26,8 +26,8 @@
 					<input placeholder="请输入密码" v-model="this.password"  clearable />
 				</view> -->
 				
-			  <button class="login-btn animation-scale-up" :style="[{animationDelay: '0.1s'}]" type="primary" @click="submitLogin">登录</button>
-			  <button class="login-btn animation-slide-bottom" :style="[{animationDelay: '0.1s'}]" type="primary" @click="submitRegister">注册</button>
+			  <button class="bg-gradual-green login-btn animation-scale-up" :style="[{animationDelay: '0.1s'}]" type="primary" @click="submitLogin">登录</button>
+			  <button class="bg-gradual-green login-btn animation-slide-bottom" :style="[{animationDelay: '0.1s'}]" type="primary" @click="submitRegister">注册</button>
 			</block>
 		  </view>
 </template>
@@ -97,11 +97,6 @@ export default {
   .avatar-img {
     width: 200px;
     height: 150px;
-  }
-  .login-desc {
-    color: grey;
-    font-size: medium;
-    margin-top: 5%;
   }
   .login-btn {
     margin-top: 5%;

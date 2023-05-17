@@ -1,9 +1,10 @@
 <template>
 	<view>
 		<view class="plBox">
-			<textarea auto-height="true" maxlength="-1" :show-confirm-bar="false" cursor-spacing="100" fixed="true"
-				placeholder="在这里发表评论" v-model="this.plValue" @input="changeDisabled"></textarea>
-			<button plain="true" @click="send" :disabled="disabled">发送</button>
+			<textarea placeholder="在这里发表评论" v-model="this.plValue"></textarea>
+
+			<button plain="true" @click="this.send()">发送</button>
+			<button plain="true" @click="this.clear()">清除</button>
 		</view>
 	</view>
 </template>
@@ -12,27 +13,40 @@
 	export default {
 		data() {
 			return {
-				// 默认禁止点击按钮
-				disabled: true,
 				plValue: ''
 			}
 		},
+		
 
 		onLoad() {
 
 		},
 		methods: {
-			changeDisabled(e) {
-				console.log(e);
-				if (e.detail.value != "") {
-					this.disabled = false;
-				} else {
-					this.disabled = true;
-				}
-			},
 			send() {
-				// console.log("点击发送", this.plValue);
-				this.$emit("sendTxt", this.plValue)
+				console.log("点击发送", this.plValue);
+				uni.request({
+					url: "https://anitu2.2022martu1.cn:8080/api/comment",
+					data: {
+						user_id: post.author_id
+					},
+					header: {
+						'Authorization': "Bearer " + uni.getStorageSync('token'),
+					},
+					method: 'POST',
+					success: function(res) {
+						if (res.statusCode == 200) {
+							
+						} else {
+							console.log(res.errMsg)
+						}
+					}.bind(this),
+				});
+				
+			},
+			
+			clear() {
+				this.plValue = ""
+				
 			}
 		}
 	}
@@ -56,7 +70,7 @@
 			flex: 7;
 			flex-shrink: 0;
 			border-radius: 15rpx;
-			max-height: 140rpx !important;
+			max-height: 100rpx !important;
 			margin-right: 30rpx;
 			border: none;
 			background-color: #ffffff;

@@ -62,7 +62,8 @@ const _sfc_main = {
       return "https://anitu2.2022martu1.cn" + url;
     },
     transformHelp(item) {
-      return item.is_help == true ? "求助" : "非求助";
+      console.log(item.is_help);
+      return item.is_help == 1 ? "求助" : "非求助";
     },
     renewPage() {
       common_vendor.index.request({
@@ -82,7 +83,6 @@ const _sfc_main = {
             console.log(res.data);
             let info = res.data.data.posts;
             this.block = [];
-            console.log("info=" + info);
             if (info == null) {
               return;
             }
@@ -225,7 +225,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         d: common_vendor.p({
           title: item.user_name,
           ["sub-title"]: item.time,
-          extra: this.transformHelp(item.is_help),
+          extra: item.title,
           thumbnail: $options.transformUrl(item.avatar),
           padding: "10px 0"
         })

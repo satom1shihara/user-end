@@ -18,9 +18,9 @@
 		
 		<div v-for="(item, index) in this.block" class="demo-uni-row animation-slide-bottom" :style="[{animationDelay: '0.4s'}]">
 			
-			<uni-card :title="item.user_name" :sub-title="item.time" :extra="this.transformHelp(item.is_help)" :thumbnail="transformUrl(item.avatar)" padding="10px 0" @click="onClick(item)">
+			<uni-card :title="item.user_name" :sub-title="item.time" :extra="item.title" :thumbnail="transformUrl(item.avatar)" padding="10px 0" @click="onClick(item)">
 				<div v-for="pic in item.picUrl">
-					<image style="width: 100%;" :src="transformUrl(pic)"></image>
+					<image style="width: 100%;" :src="transformUrl(pic)" mode="aspectFill"></image>
 				</div>
 			</uni-card>
 
@@ -97,7 +97,8 @@
 			},
 			
 			transformHelp(item) {
-				return item.is_help == true ? "求助" : "非求助"
+				console.log(item.is_help)
+				return item.is_help == 1 ? "求助" : "非求助"
 			},
 			
 			renewPage() {
@@ -119,7 +120,6 @@
 							console.log(res.data)
 							let info = res.data.data.posts
 							this.block = []
-							console.log("info=" + info)
 							if (info == null) {
 								return
 							}

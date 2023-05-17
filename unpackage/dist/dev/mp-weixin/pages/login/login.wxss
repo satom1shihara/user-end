@@ -10,11 +10,6 @@
   width: 200px;
   height: 150px;
 }
-.my-container .login-desc.data-v-e4e4508d {
-  color: grey;
-  font-size: medium;
-  margin-top: 5%;
-}
 .my-container .login-btn.data-v-e4e4508d {
   margin-top: 5%;
   width: 85%;

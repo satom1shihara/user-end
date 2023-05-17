@@ -24,20 +24,20 @@
       {
         "pagePath": "pages/archive/archive",
         "text": "档案",
-        "iconPath": "static/c1.png",
-        "selectedIconPath": "static/c1.png"
+        "iconPath": "static/archive.png",
+        "selectedIconPath": "static/archive-fill.png"
       },
       {
         "pagePath": "pages/forum/forum",
         "text": "论坛",
-        "iconPath": "static/c2.png",
-        "selectedIconPath": "static/c2.png"
+        "iconPath": "static/forum.png",
+        "selectedIconPath": "static/forum-fill.png"
       },
       {
         "pagePath": "pages/myInfo/myInfo",
         "text": "我的",
-        "iconPath": "static/c3.png",
-        "selectedIconPath": "static/c3.png"
+        "iconPath": "static/person.png",
+        "selectedIconPath": "static/person-fill.png"
       }
     ]
   },

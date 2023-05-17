@@ -13,6 +13,10 @@ const _sfc_main = {
     this.renewPage();
   },
   onPullDownRefresh: function() {
+    console.log("refresh");
+    setTimeout(function() {
+      common_vendor.index.stopPullDownRefresh();
+    }, 1e3);
     this.renewPage();
   },
   methods: {

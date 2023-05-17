@@ -74,15 +74,15 @@
 								formData: {
 									"opt": 0
 								},
-								success: (uploadFileRes) => {
-									if (uploadFileRes.statusCode == 200) {
-										const data = JSON.parse(uploadFileRes.data)
+								success: function(res) {
+									if (res.statusCode == 200) {
+										const data = JSON.parse(res.data)
 										console.log("data=" + data.path)
 										this.baseFormData.picUrl.push(data.path)
 									} else {
-										console.log(uploadFileRes.data)
+										console.log(res.data)
 									}
-								},
+								}.bind(this),
 							})
 						}
 						

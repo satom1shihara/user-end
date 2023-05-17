@@ -247,6 +247,9 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     z: common_vendor.p({
       padding: "10px 0"
+    }),
+    A: common_vendor.s({
+      animationDelay: "0.4s"
     })
   };
 }

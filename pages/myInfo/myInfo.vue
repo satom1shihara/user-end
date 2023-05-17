@@ -107,6 +107,10 @@
 		},
 		
 		onPullDownRefresh: function() {
+			console.log('refresh');
+				setTimeout(function () {
+					uni.stopPullDownRefresh();
+				}, 1000);
 			this.renewPage()
 		},
 		

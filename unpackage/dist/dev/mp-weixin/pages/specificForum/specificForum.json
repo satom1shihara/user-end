@@ -2,12 +2,10 @@
   "navigationBarTitleText": "",
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "mycommentor": "../../uni_modules/my-commentor/components/my-commentor/my-commentor",
-    "uni-icons": "../../uni_modules/uni-icons/components/uni-icons/uni-icons",
     "uni-col": "../../uni_modules/uni-row/components/uni-col/uni-col",
+    "uni-icons": "../../uni_modules/uni-icons/components/uni-icons/uni-icons",
     "uni-tooltip": "../../uni_modules/uni-tooltip/components/uni-tooltip/uni-tooltip",
     "uni-row": "../../uni_modules/uni-row/components/uni-row/uni-row",
-    "uni-card": "../../uni_modules/uni-card/components/uni-card/uni-card",
-    "uni-section": "../../uni_modules/uni-section/components/uni-section/uni-section"
+    "uni-card": "../../uni_modules/uni-card/components/uni-card/uni-card"
   }
 }

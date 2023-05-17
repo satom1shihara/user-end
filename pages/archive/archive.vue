@@ -31,7 +31,7 @@
 		
 		<uni-notice-bar text="上方可进行搜索,下方可查看动物信息的档案" />
 		
-		<div v-for="(item, index) in block">
+		<div v-for="(item, index) in block" class="demo-uni-row animation-slide-bottom" :style="[{animationDelay: '0.4s'}]">
 			
 			<uni-card padding="10px 0" >
 				<template v-slot:title>
@@ -39,7 +39,7 @@
 						<uni-list-item  :title="item.name" ></uni-list-item>
 					</uni-list>
 				</template>
-				<image style="width: 100%;" :src="transformUrl(item.picUrl[0])"></image>
+				<image style="width: 100%;" :src="transformUrl(item.picUrl[0])" mode="aspectFill"></image>
 				<view slot="actions" class="card-actions">
 					<button type="default" @click="onClick(item)">
 						查看详情
