@@ -38,8 +38,8 @@ export default {
   name: 'my-login',
   data() {
     return {
-		phone_number: "13942919766",
-		password: "ssssss",
+		phone_number: "",
+		password: "",
 		showPassword: false
 	};
   },
@@ -62,8 +62,16 @@ export default {
 						uni.switchTab({
 							url: "/pages/myInfo/myInfo"
 						})	
+						uni.showToast({
+							title: '登录成功',
+							duration: 1000
+						})
 					} else {
-						console.log(ret)
+						uni.showToast({
+							title: ret.data.msg,
+							icon: 'error',
+							duration: 1000
+						})
 					}
 				},
 				fail: (ret) => {

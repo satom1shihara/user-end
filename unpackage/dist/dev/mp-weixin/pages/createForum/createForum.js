@@ -43,7 +43,7 @@ const _sfc_main = {
               success: function(res) {
                 if (res.statusCode == 200) {
                   const data = JSON.parse(res.data);
-                  console.log("data=" + data.path);
+                  console.log("dataType=" + typeof data.path);
                   this.baseFormData.picUrl.push(data.path);
                 } else {
                   console.log(res.data);
@@ -55,6 +55,10 @@ const _sfc_main = {
       });
     },
     submitForm() {
+      console.log("pic---");
+      console.log(this.baseFormData.picUrl.toString().split(","));
+      console.log(this.baseFormData.tag.split(","));
+      console.log("pic end----");
       common_vendor.index.request({
         url: "https://anitu2.2022martu1.cn:8080/api/post",
         data: {
@@ -62,7 +66,7 @@ const _sfc_main = {
           title: this.baseFormData.title,
           content: this.baseFormData.content,
           tags: this.baseFormData.tag.split(","),
-          pics: this.baseFormData.picUrl,
+          pics: this.baseFormData.picUrl.toString().split(","),
           is_help: this.baseFormData.is_help
         },
         method: "POST",

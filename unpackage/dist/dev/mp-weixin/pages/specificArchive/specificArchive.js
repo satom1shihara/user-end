@@ -25,13 +25,22 @@ const _sfc_main = {
   },
   methods: {
     want(item) {
-      const dataObj = {
-        ani_name: this.ani_name,
-        id: this.id
-      };
-      common_vendor.index.navigateTo({
-        url: "/pages/createApply/createApply?dataObj=" + encodeURIComponent(JSON.stringify(dataObj))
-      });
+      if (this.status == true) {
+        common_vendor.index.showToast({
+          title: "已经被领养惹~",
+          icon: "error",
+          duration: 2e3
+        });
+      } else {
+        const dataObj = {
+          ani_name: this.name,
+          id: this.id,
+          picUrl: this.picUrl[0]
+        };
+        common_vendor.index.navigateTo({
+          url: "/pages/createApply/createApply?dataObj=" + encodeURIComponent(JSON.stringify(dataObj))
+        });
+      }
     }
   }
 };
@@ -58,8 +67,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       size: "20"
     }),
     d: common_vendor.o(($event) => $options.want(_ctx.item)),
-    e: this.status,
-    f: common_vendor.p({
+    e: common_vendor.p({
       title: this.name,
       extra: this.sex
     })

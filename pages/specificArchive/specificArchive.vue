@@ -2,14 +2,14 @@
 	<view>			
 			<uni-card :title="this.name" :extra="this.sex">
 				
-				<p class="content"> {{this.content}} </p>
+				<p class="content" > {{this.content}} </p>
 				
 				<div v-for="(it, index) in this.picUrl">
-					<img :src=" 'https://anitu2.2022martu1.cn' + it" style="text-align: center; height: 200px; width: 200px;">
+					<img  mode="aspectFill" :src=" 'https://anitu2.2022martu1.cn' + it" style="text-align: center;">
 				</div>
 				
 				<view slot="actions" class="card-actions">
-					<button type="default" @click="want(item)" :disabled="this.status">
+					<button type="default" @click="want(item)">
 						想要ta~
 						<uni-icons type="heart-filled" size="20"></uni-icons>
 					</button>
@@ -48,13 +48,23 @@
 		methods: {
 			
 			want(item) {
-				const dataObj = {
-					ani_name: this.ani_name,
-					id: this.id
-				};
-				uni.navigateTo({
-					url: "/pages/createApply/createApply?dataObj=" + encodeURIComponent(JSON.stringify(dataObj))
-				})
+				if (this.status == true) {
+					uni.showToast({
+						title: '已经被领养惹~',
+						icon: 'error',
+						duration: 2000
+					})
+				} else {
+					const dataObj = {
+						ani_name: this.name,
+						id: this.id,
+						picUrl: this.picUrl[0]
+					};
+					uni.navigateTo({
+						url: "/pages/createApply/createApply?dataObj=" + encodeURIComponent(JSON.stringify(dataObj))
+					})
+				}
+				
 			}
 		}
 	}

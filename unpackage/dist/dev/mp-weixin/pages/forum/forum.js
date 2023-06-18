@@ -3,6 +3,7 @@ const common_vendor = require("../../common/vendor.js");
 const _sfc_main = {
   data() {
     return {
+      pattern: "display",
       info: {
         name: "",
         avatar: ""
@@ -58,6 +59,9 @@ const _sfc_main = {
     this.renewPage();
   },
   methods: {
+    cancel() {
+      this.renewPage();
+    },
     transformUrl(url) {
       return "https://anitu2.2022martu1.cn" + url;
     },
@@ -78,10 +82,10 @@ const _sfc_main = {
           "Content-Type": "application/x-www-form-urlencoded"
         },
         method: "GET",
-        success: function(res) {
-          if (res.statusCode == 200) {
-            console.log(res.data);
-            let info = res.data.data.posts;
+        success: function(res2) {
+          if (res2.statusCode == 200) {
+            console.log(res2.data);
+            let info = res2.data.data.posts;
             this.block = [];
             if (info == null) {
               return;
@@ -100,7 +104,6 @@ const _sfc_main = {
                 picUrl: []
               };
               post.author_id = info[i].author_id;
-              console.log("11");
               common_vendor.index.request({
                 url: "https://anitu2.2022martu1.cn:8080/api/user/view",
                 data: {
@@ -110,52 +113,120 @@ const _sfc_main = {
                   "Authorization": "Bearer " + common_vendor.index.getStorageSync("token")
                 },
                 method: "GET",
-                success: function(res2) {
-                  if (res2.statusCode == 200) {
-                    console.log("33");
-                    post.user_name = res2.data.name;
-                    post.avatar = res2.data.avatar;
-                    console.log("name=" + post.user_name);
-                    console.log("avatar=" + post.avatar);
+                success: function(res3) {
+                  if (res3.statusCode == 200) {
+                    post.user_name = res3.data.name;
+                    post.avatar = res3.data.avatar;
                     post.time = info[i].time.substring(0, 10);
-                    console.log("time=" + post.time);
                     post.post_id = info[i].post_id;
                     post.title = info[i].title;
                     post.content = info[i].content;
                     post.is_help = info[i].is_help;
                     post.status = info[i].status;
                     post.tag = info[i].tags;
-                    post.picUrl = info[i].pics;
-                    console.log("post=" + post);
-                    console.log("111");
+                    post.picUrl = info[i].pics[0].split(",");
                     if (post.status == 2) {
                       this.block.push(post);
                     }
-                    console.log("33");
                   } else {
-                    console.log(res2.errMsg);
+                    console.log(res3.errMsg);
                   }
                 }.bind(this)
               });
             }
           } else {
-            console.log(res.errMsg);
+            console.log(res2.errMsg);
           }
           this.$forceUpdate();
         }.bind(this),
-        fail: (res) => {
+        fail: (res2) => {
           console.log("fail to connect!");
         }
       });
     },
-    search(res) {
-      common_vendor.index.showToast({
-        title: "搜索：" + res.value,
-        icon: "none"
-      });
+    search(res1) {
+      if (res1.value == "") {
+        common_vendor.index.showToast({
+          title: "搜索内容不为空哦",
+          icon: "none",
+          duration: 1e3
+        });
+      } else {
+        common_vendor.index.request({
+          url: "https://anitu2.2022martu1.cn:8080/api/post/search",
+          data: {
+            keyword: res1.value
+          },
+          header: {
+            "Authorization": "Bearer " + common_vendor.index.getStorageSync("token")
+          },
+          method: "GET",
+          success: function(res2) {
+            if (res2.statusCode == 200) {
+              this.pattern = "search";
+              console.log(res2.data);
+              let info = res2.data.data.posts;
+              this.block = [];
+              if (info == null) {
+                return;
+              }
+              for (let i = 0; i < info.length; i++) {
+                let post = {
+                  user_name: "",
+                  time: "",
+                  avatar: "",
+                  author_id: 0,
+                  post_id: 0,
+                  title: "",
+                  content: "",
+                  is_help: 0,
+                  tag: [],
+                  picUrl: []
+                };
+                post.author_id = info[i].author_id;
+                common_vendor.index.request({
+                  url: "https://anitu2.2022martu1.cn:8080/api/user/view",
+                  data: {
+                    user_id: post.author_id
+                  },
+                  header: {
+                    "Authorization": "Bearer " + common_vendor.index.getStorageSync("token")
+                  },
+                  method: "GET",
+                  success: function(res3) {
+                    if (res3.statusCode == 200) {
+                      post.user_name = res3.data.name;
+                      post.avatar = res3.data.avatar;
+                      post.time = info[i].time.substring(0, 10);
+                      post.post_id = info[i].post_id;
+                      post.title = info[i].title;
+                      post.content = info[i].content;
+                      post.is_help = info[i].is_help;
+                      post.status = info[i].status;
+                      post.tag = info[i].tags;
+                      post.picUrl = info[i].pics[0].split(",");
+                      if (post.status == 2) {
+                        this.block.push(post);
+                      }
+                    } else {
+                      console.log(res3.errMsg);
+                    }
+                  }.bind(this)
+                });
+              }
+            } else {
+              console.log(res.errMsg);
+            }
+            this.$forceUpdate();
+          }.bind(this),
+          fail: (res2) => {
+            console.log("fail to connect!");
+          }
+        });
+      }
     },
-    input(res) {
-      console.log("----input:", res);
+    input(res2) {
+      console.log("----input:", res2);
     },
     onBackPress() {
       plus.key.hideSoftKeybord();
@@ -193,14 +264,15 @@ if (!Math) {
   (_easycom_uni_search_bar + _easycom_uni_col + _easycom_uni_icons + _easycom_uni_row + _easycom_uni_card)();
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return {
+  return common_vendor.e({
     a: common_vendor.o($options.search),
     b: common_vendor.o($options.input),
-    c: common_vendor.o(_ctx.cancel),
+    c: common_vendor.o($options.cancel),
     d: common_vendor.o(_ctx.clear),
     e: common_vendor.o(($event) => $data.searchValue = $event),
     f: common_vendor.p({
       focus: true,
+      placeholder: "请输入关键词进行搜索",
       modelValue: $data.searchValue
     }),
     g: common_vendor.p({
@@ -213,13 +285,15 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     j: common_vendor.p({
       span: 4
     }),
-    k: common_vendor.f(this.block, (item, index, i0) => {
+    k: this.block != ""
+  }, this.block != "" ? {
+    l: common_vendor.s({
+      animationDelay: "0.4s"
+    }),
+    m: common_vendor.n("no-card"),
+    n: common_vendor.f(this.block, (item, index, i0) => {
       return {
-        a: common_vendor.f(item.picUrl, (pic, k1, i1) => {
-          return {
-            a: $options.transformUrl(pic)
-          };
-        }),
+        a: $options.transformUrl(item.picUrl[0]),
         b: common_vendor.o(($event) => $options.onClick(item)),
         c: "aeadbf01-5-" + i0,
         d: common_vendor.p({
@@ -231,10 +305,12 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         })
       };
     }),
-    l: common_vendor.s({
+    o: common_vendor.s({
       animationDelay: "0.4s"
     })
-  };
+  } : common_vendor.e({
+    p: this.pattern == "display"
+  }, this.pattern == "display" ? {} : {}));
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-aeadbf01"], ["__file", "E:/user-end/user-end/pages/forum/forum.vue"]]);
 wx.createPage(MiniProgramPage);

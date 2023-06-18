@@ -3,8 +3,7 @@
 	<view>
 		<uni-row class="demo-uni-row">
 							<uni-col :span="20">
-								<uni-search-bar @confirm="search" :focus="true" v-model="searchValue" @input="input"
-									@cancel="cancel" @clear="clear" >
+								<uni-search-bar @confirm="search" :focus="true" v-model="searchValue" @input="input" @cancel="cancel" @clear="clear" placeholder="请输入关键词进行搜索">
 								</uni-search-bar>
 							</uni-col>
 							<uni-col :span="4">
@@ -14,16 +13,65 @@
 							</uni-col>
 		</uni-row>
 		
-		<!-- <uni-notice-bar text="上方可进行搜索和发布新的帖子,下方可查看大家发布的帖子" /> -->
 		
+		
+		<!-- <uni-notice-bar text="上方可进行搜索和发布新的帖子,下方可查看大家发布的帖子" /> -->
+		<div v-if="this.block != '' ">
+			
+			<view class="cu-card case bg-white padding-bottom animation-slide-top" :style="[{animationDelay: '0.4s'}]" :class="'no-card'">
+					<view class="shadow">
+						<view class="image" style="background:url(https://anitu2.2022martu1.cn/match/bgpic.png)no-repeat center center;height: 150px;background-size: 100% 100%;">
+							<view class="flex justify-between">
+								<view class="padding-sm margin-xsradius ">
+									<view class="text-white text-center text-xl">看看大家都说了些什么吧~</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
 		<div v-for="(item, index) in this.block" class="demo-uni-row animation-slide-bottom" :style="[{animationDelay: '0.4s'}]">
 			
 			<uni-card :title="item.user_name" :sub-title="item.time" :extra="item.title" :thumbnail="transformUrl(item.avatar)" padding="10px 0" @click="onClick(item)">
-				<div v-for="pic in item.picUrl">
-					<image style="width: 100%;" :src="transformUrl(pic)" mode="aspectFill"></image>
-				</div>
+				<image style="width: 100%;" :src="transformUrl(item.picUrl[0])" mode="aspectFill"></image>
 			</uni-card>
 
+			</div>
+		</div>
+		<div v-else>
+			<div v-if="this.pattern == 'display' ">
+				<view class="cu-list menu-avatar comment solids-top">
+								<view class="cu-item">
+									<view class="cu-avatar round" style="background-image:url(/static/bgpic.png);">
+									</view>
+									<view class="content">
+										<view class="text-grey">修狗管理员~</view>
+										<view class="text-gray text-content text-df">
+											噫？还没有人发帖呢~ 快来发表帖子吧
+										</view>
+									</view>
+									
+								</view>
+								<image mode="widthFix" src="/static/bgpic.png"></image>
+				
+				</view>
+			</div>
+			<div v-else>
+				<view class="cu-list menu-avatar comment solids-top">
+								<view class="cu-item">
+									<view class="cu-avatar round" style="background-image:url(/static/bgpic.png);">
+									</view>
+									<view class="content">
+										<view class="text-grey">修狗管理员~</view>
+										<view class="text-gray text-content text-df">
+											嗷呜~ 没找到相关内容哦
+										</view>
+									</view>
+									
+								</view>
+								<image mode="widthFix" src="/static/bgpic.png"></image>
+				
+				</view>
+			</div>
 		</div>
 	</view>
 </template>
@@ -33,6 +81,7 @@
 		
 		data() {
 			return {
+				pattern: "display",
 				info: {
 					name: "",
 					avatar: "",
@@ -92,6 +141,10 @@
 		
 		
 		methods: {
+			cancel() {
+				this.renewPage()
+			},
+			
 			transformUrl(url) {
 				return "https://anitu2.2022martu1.cn" + url
 			},
@@ -138,7 +191,6 @@
 								}
 								
 								post.author_id = info[i].author_id
-								console.log("11")
 								uni.request({
 									url: "https://anitu2.2022martu1.cn:8080/api/user/view",
 									data: {
@@ -150,35 +202,25 @@
 									method: 'GET',
 									success: function(res) {
 										if (res.statusCode == 200) {
-											console.log("33")
 											post.user_name = res.data.name
 											post.avatar = res.data.avatar
-											console.log("name=" + post.user_name)
-											console.log("avatar=" + post.avatar)
 											post.time = info[i].time.substring(0, 10)
-											console.log("time=" + post.time)
 											post.post_id = info[i].post_id
 											post.title = info[i].title
 											post.content = info[i].content
 											post.is_help = info[i].is_help
 											post.status = info[i].status
 											post.tag = info[i].tags
-											post.picUrl = info[i].pics
-											console.log("post=" + post)
-											console.log("111")
+											post.picUrl = info[i].pics[0].split(",")
 											if (post.status == 2) {
 												this.block.push(post)
 												// console.log(post)
 											}
-											console.log("33")
 										} else {
 											console.log(res.errMsg)
 										}
 									}.bind(this),
 								});
-								
-								
-								
 							}
 						} else {
 							console.log(res.errMsg)
@@ -191,12 +233,89 @@
 				})
 			},
 			
-			search(res) {
-							uni.showToast({
-								title: '搜索：' + res.value,
-								icon: 'none'
-							})
+			search(res1) {
+				if (res1.value == "") {
+					uni.showToast({
+						title: '搜索内容不为空哦',
+						icon: 'none',
+						duration: 1000
+					})	
+				} else {
+					uni.request({
+						url: "https://anitu2.2022martu1.cn:8080/api/post/search", 
+						data: {
+							keyword: res1.value
 						},
+						header: {
+							'Authorization': "Bearer " + uni.getStorageSync('token')
+						},
+						method: 'GET',
+						success: function (res2) {
+							if (res2.statusCode == 200) {
+								this.pattern = "search"
+								console.log(res2.data)
+								let info = res2.data.data.posts
+								this.block = []
+								if (info == null) {
+									return
+								}
+								for (let i = 0; i < info.length; i++) {
+									let post = {
+										user_name: "",
+										time: "",
+										avatar: "",
+										author_id: 0,
+										post_id: 0,
+										title: "",
+										content: "",
+										is_help: 0,
+										tag: [],
+										picUrl: [],
+									}
+									
+									post.author_id = info[i].author_id
+									uni.request({
+										url: "https://anitu2.2022martu1.cn:8080/api/user/view",
+										data: {
+											user_id: post.author_id
+										},
+										header: {
+											'Authorization': "Bearer " + uni.getStorageSync('token'),
+										},
+										method: 'GET',
+										success: function(res) {
+											if (res.statusCode == 200) {
+												post.user_name = res.data.name
+												post.avatar = res.data.avatar
+												post.time = info[i].time.substring(0, 10)
+												post.post_id = info[i].post_id
+												post.title = info[i].title
+												post.content = info[i].content
+												post.is_help = info[i].is_help
+												post.status = info[i].status
+												post.tag = info[i].tags
+												post.picUrl = info[i].pics[0].split(",")
+												if (post.status == 2) {
+													this.block.push(post)
+													// console.log(post)
+												}
+											} else {
+												console.log(res.errMsg)
+											}
+										}.bind(this),
+									});
+								}
+							} else {
+								console.log(res.errMsg)
+							}
+							this.$forceUpdate()
+						}.bind(this),
+						fail: (res) => {
+							console.log("fail to connect!")
+						}
+					});
+				}
+			},
 			input(res) {
 							console.log('----input:', res)
 						},

@@ -4,6 +4,9 @@ const _sfc_main = {
   computed: {
     checkPassword() {
       return this.baseFormData.password == this.baseFormData.repeatPassword ? false : true;
+    },
+    checkFull() {
+      return !(this.baseFormData.user_name == "" || this.baseFormData.phone_number == "" || this.baseFormData.password == "" || this.baseFormData.email == "");
     }
   },
   data() {
@@ -19,23 +22,38 @@ const _sfc_main = {
   },
   methods: {
     submitForm() {
-      common_vendor.index.request({
-        url: "https://anitu2.2022martu1.cn:8080/api/user/register",
-        data: this.baseFormData,
-        method: "POST",
-        success: (ret) => {
-          if (ret.statusCode == 200) {
-            common_vendor.index.redirectTo({
-              url: "/pages/login/login"
-            });
-          } else {
-            console.log(ret.data);
+      if (!this.checkFull) {
+        common_vendor.index.showToast({
+          title: "请填写所有必填项",
+          icon: "error",
+          duration: 1e3
+        });
+      } else {
+        common_vendor.index.request({
+          url: "https://anitu2.2022martu1.cn:8080/api/user/register",
+          data: this.baseFormData,
+          method: "POST",
+          success: (ret) => {
+            if (ret.statusCode == 200) {
+              common_vendor.index.navigateBack();
+              common_vendor.index.showToast({
+                title: "注册成功",
+                duration: 1e3
+              });
+            } else {
+              common_vendor.index.showToast({
+                title: ret.data.msg,
+                icon: "error",
+                duration: 1e3
+              });
+              console.log(ret.data);
+            }
+          },
+          fail: (ret) => {
+            console.log("fail to connect!");
           }
-        },
-        fail: (ret) => {
-          console.log("fail to connect!");
-        }
-      });
+        });
+      }
     }
   }
 };

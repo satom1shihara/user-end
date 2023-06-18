@@ -1,12 +1,31 @@
 <template>
 	<view>
-		<ul>
+		<view v-if="this.block == '' ">
+			<view class="cu-list menu-avatar comment solids-top">
+							<view class="cu-item">
+								<view class="cu-avatar round" style="background-image:url(/static/bgpic.png);">
+								</view>
+								<view class="content">
+									<view class="text-grey">修狗管理员~</view>
+									<view class="text-gray text-content text-df">
+										噫？你还没有发帖呢~ 快来发表帖子吧
+									</view>
+								</view>
+								
+							</view>
+							<image mode="widthFix" src="/static/bgpic.png"></image>
+			
+			</view>
+		</view>
+		
+		<view v-else>
 			<div v-for="(item, index) in block">
 				
-				<uni-card :title="item.user_name" :sub-title="item.time" :extra="item.title" :thumbnail="transformUrl(item.avatar)" padding="10px 0" @click="onClick(item)">
-					<div v-for="pic in item.picUrl">
+				<uni-card :title="item.user_name" :sub-title="item.time" :extra="item.title" :thumbnail="transformUrl(item.avatar)">
+					<!-- <div v-for="pic in item.picUrl">
 						<image style="width: 100%;" :src="transformUrl(pic)" mode="aspectFill"></image>
-					</div>
+					</div> -->
+					<image style="width: 100%;" :src="transformUrl(item.picUrl[0])" mode="aspectFill"></image>
 					<view slot="actions" class="card-actions">
 						<uni-row class="demo-uni-row">
 							<uni-col span="12">
@@ -25,7 +44,7 @@
 				</uni-card>
 			
 			</div>
-		</ul>
+		</view>
 	</view>
 </template>
 
@@ -103,17 +122,17 @@
 					header: {
 						'Authorization': "Bearer " + uni.getStorageSync('token'),
 					},
-					success: (ret) => {
+					success: function(ret) {
 						if (ret.statusCode == 200) {
-							uni.navigateBack()
 							uni.showToast({
 								title: '删除成功',
 								duration: 1000
 							})
+							this.renewPage()
 						} else {
 							console.log(ret.data)
 						}
-					},
+					}.bind(this),
 					fail: (ret) => {
 						console.log("fail to connect!")
 					}
@@ -139,7 +158,6 @@
 							console.log(res.data)
 							let info = res.data.data.posts
 							this.block = []
-							console.log("info=" + info)
 							if (info == null) {
 								return
 							}
@@ -158,7 +176,6 @@
 								}
 								
 								post.author_id = info[i].author_id
-								console.log("11")
 								uni.request({
 									url: "https://anitu2.2022martu1.cn:8080/api/user/view",
 									data: {
@@ -170,35 +187,25 @@
 									method: 'GET',
 									success: function(res) {
 										if (res.statusCode == 200) {
-											console.log("33")
 											post.user_name = res.data.name
 											post.avatar = res.data.avatar
-											console.log("name=" + post.user_name)
-											console.log("avatar=" + post.avatar)
 											post.time = info[i].time.substring(0, 10)
-											console.log("time=" + post.time)
 											post.post_id = info[i].post_id
 											post.title = info[i].title
 											post.content = info[i].content
 											post.is_help = info[i].is_help
 											post.status = info[i].status
 											post.tag = info[i].tags
-											post.picUrl = info[i].pics
-											console.log("post=" + post)
-											console.log("111")
+											post.picUrl = info[i].pics[0].split(",")
 											if (post.status == 2 && post.author_id == uni.getStorageSync('user_id')) {
 												this.block.push(post)
 												// console.log(post)
 											}
-											console.log("33")
 										} else {
 											console.log(res.errMsg)
 										}
 									}.bind(this),
 								});
-								
-								
-								
 							}
 						} else {
 							console.log(res.errMsg)

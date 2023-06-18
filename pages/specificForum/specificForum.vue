@@ -44,7 +44,12 @@
 						
 					</div>
 				</uni-section> -->
-				
+				<view class="cu-bar justify-left bg-white margin-top-sm">
+								<view class="action border-title">
+									<text class="text-lg text-bold text-blue">评论区</text>
+									<text class="bg-gradual-blue" style="width:3rem"></text>
+								</view>
+							</view>
 				
 				<view>
 				        <view class="uni-padding-wrap">
@@ -66,46 +71,6 @@
 				                    </view>
 				                </view>
 								
-								
-				               <!-- <view class="uni-comment-list">
-				                    <view class="uni-comment-face">
-				                        <image src="/static/avatar.png" mode="widthFix"></image>
-				                    </view>
-				                    <view class="uni-comment-body">
-				                        <view class="uni-comment-top">
-				                            <text>马克一天</text>
-				                        </view>
-				                        <view class="uni-comment-content">很强大，厉害了我的uni-app!</view>
-				                    </view>
-				                </view>
-				                <view class="uni-comment-list">
-				                    <view class="uni-comment-face">
-				                        <image src="/static/avatar.png" mode="widthFix"></image>
-				                    </view>
-				                    <view class="uni-comment-body">
-				                        <view class="uni-comment-top">
-				                            <text>今生缘</text>
-				                        </view>
-				                        <view class="uni-comment-content">好牛逼的感觉，是不是小程序、App、移动端都互通了？</view>
-				                        <view class="uni-comment-date">
-				                            <text>08/10 07:55</text>
-				                        </view>
-				                    </view>
-				                </view>
-				                <view class="uni-comment-list">
-				                    <view class="uni-comment-face">
-				                        <image src="/static/avatar.png" mode="widthFix"></image>
-				                    </view>
-				                    <view class="uni-comment-body">
-				                        <view class="uni-comment-top">
-				                            <text>小猫咪</text>
-				                        </view>
-				                        <view class="uni-comment-content">支持国产，支持DCloud!</view>
-				                        <view class="uni-comment-date">
-				                            <view>2天前</view>
-				                        </view>
-				                    </view>
-				                </view> -->
 				            </view>
 				        </view>
 				    </view>
@@ -128,6 +93,11 @@
 		// components: {
 		// 	mycommentor
 		// },
+		computed: {
+			checkComment() {
+				return this.plValue == "" ? true : false
+			}
+		},
 		
 		data() {
 			return {
@@ -143,24 +113,24 @@
 				commentList: ["123", "3523"],
 				is_help: true,
 				comments: [
-					{
-						avatar: "/static/logo.png",
-						name: "name",
-						content: "asjdoasjdsdjkasdasdasd",
-						time: "12.31"
-					},
-					{
-						avatar: "/static/logo.png",
-						name: "name",
-						content: "asjdoasjdsdjkasdasdasd",
-						time: "12.31"
-					},
-					{
-						avatar: "/static/logo.png",
-						name: "name",
-						content: "asjdoasjdsdjkasdasdasd",
-						time: "12.31"
-					}
+					// {
+					// 	avatar: "/static/logo.png",
+					// 	name: "name",
+					// 	content: "asjdoasjdsdjkasdasdasd",
+					// 	time: "12.31"
+					// },
+					// {
+					// 	avatar: "/static/logo.png",
+					// 	name: "name",
+					// 	content: "asjdoasjdsdjkasdasdasd",
+					// 	time: "12.31"
+					// },
+					// {
+					// 	avatar: "/static/logo.png",
+					// 	name: "name",
+					// 	content: "asjdoasjdsdjkasdasdasd",
+					// 	time: "12.31"
+					// }
 				]
 			}
 		},
@@ -175,28 +145,39 @@
 		methods: {
 			send() {
 				console.log("点击发送", this.plValue);
-				uni.request({
-					url: "https://anitu2.2022martu1.cn:8080/api/post/comment",
-					data: {
-						post_id: this.post_id,
-						author_id: uni.getStorageSync("user_id"),
-						content: this.plValue
-					},
-					header: {
-						'Authorization': "Bearer " + uni.getStorageSync('token'),
-					},
-					method: 'POST',
-					success: function(res) {
-						if (res.statusCode == 200) {
-							uni.showToast({
-								title: '发布成功',
-								duration: 1000
-							})
-						} else {
-							console.log(res.errMsg)
-						}
-					}.bind(this),
-				});
+				if (this.checkComment) {
+					uni.showToast({
+						title: '评论不能为空嗷',
+						icon: 'error',
+						duration: 1000
+					})
+				} else {
+					uni.request({
+						url: "https://anitu2.2022martu1.cn:8080/api/post/comment",
+						data: {
+							post_id: this.post_id,
+							author_id: uni.getStorageSync("user_id"),
+							content: this.plValue
+						},
+						header: {
+							'Authorization': "Bearer " + uni.getStorageSync('token'),
+						},
+						method: 'POST',
+						success: function(res) {
+							if (res.statusCode == 200) {
+								uni.showToast({
+									title: '发布成功',
+									duration: 1000
+								})
+								this.clear()
+								this.getDetail()
+							} else {
+								console.log(res.errMsg)
+							}
+						}.bind(this),
+					});
+				}
+				
 				
 			},
 			
@@ -230,7 +211,7 @@
 							this.tag = info.post.tags[0].split(",")
 							this.time = info.post.time.substring(0, 10)
 							this.is_help = info.post.is_help
-							this.picUrl = info.post.pics
+							this.picUrl = info.post.pics[0].split(",")
 							console.log(info.post.pics)
 							this.avatarUrl = info.user.avatar
 							uni.request({
@@ -251,13 +232,8 @@
 										this.comments = []
 										// solve comment
 										if (info.comments != null) {
-											var comment = {
-												avatar: "/static/logo.png",
-												name: "name",
-												content: "asjdoasjdsdjkasdasdasd",
-												time: "12.31"
-											}
 											for (let i = 0; i < info.comments.length; i++) {
+												
 												uni.request({
 													url: "https://anitu2.2022martu1.cn:8080/api/user/view",
 													data: {
@@ -272,6 +248,12 @@
 														if (res2.statusCode == 200) {
 															console.log("2222")
 															console.log(res2.data)
+															var comment = {
+																avatar: "/static/logo.png",
+																name: "name",
+																content: "asjdoasjdsdjkasdasdasd",
+																time: "12.31"
+															}
 															comment.avatar = res2.data.avatar
 															comment.name = res2.data.name
 															

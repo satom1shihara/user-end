@@ -4,6 +4,11 @@ const _sfc_main = {
   // components: {
   // 	mycommentor
   // },
+  computed: {
+    checkComment() {
+      return this.plValue == "" ? true : false;
+    }
+  },
   data() {
     return {
       plValue: "",
@@ -18,24 +23,24 @@ const _sfc_main = {
       commentList: ["123", "3523"],
       is_help: true,
       comments: [
-        {
-          avatar: "/static/logo.png",
-          name: "name",
-          content: "asjdoasjdsdjkasdasdasd",
-          time: "12.31"
-        },
-        {
-          avatar: "/static/logo.png",
-          name: "name",
-          content: "asjdoasjdsdjkasdasdasd",
-          time: "12.31"
-        },
-        {
-          avatar: "/static/logo.png",
-          name: "name",
-          content: "asjdoasjdsdjkasdasdasd",
-          time: "12.31"
-        }
+        // {
+        // 	avatar: "/static/logo.png",
+        // 	name: "name",
+        // 	content: "asjdoasjdsdjkasdasdasd",
+        // 	time: "12.31"
+        // },
+        // {
+        // 	avatar: "/static/logo.png",
+        // 	name: "name",
+        // 	content: "asjdoasjdsdjkasdasdasd",
+        // 	time: "12.31"
+        // },
+        // {
+        // 	avatar: "/static/logo.png",
+        // 	name: "name",
+        // 	content: "asjdoasjdsdjkasdasdasd",
+        // 	time: "12.31"
+        // }
       ]
     };
   },
@@ -50,28 +55,38 @@ const _sfc_main = {
   methods: {
     send() {
       console.log("点击发送", this.plValue);
-      common_vendor.index.request({
-        url: "https://anitu2.2022martu1.cn:8080/api/post/comment",
-        data: {
-          post_id: this.post_id,
-          author_id: common_vendor.index.getStorageSync("user_id"),
-          content: this.plValue
-        },
-        header: {
-          "Authorization": "Bearer " + common_vendor.index.getStorageSync("token")
-        },
-        method: "POST",
-        success: function(res) {
-          if (res.statusCode == 200) {
-            common_vendor.index.showToast({
-              title: "发布成功",
-              duration: 1e3
-            });
-          } else {
-            console.log(res.errMsg);
-          }
-        }.bind(this)
-      });
+      if (this.checkComment) {
+        common_vendor.index.showToast({
+          title: "评论不能为空嗷",
+          icon: "error",
+          duration: 1e3
+        });
+      } else {
+        common_vendor.index.request({
+          url: "https://anitu2.2022martu1.cn:8080/api/post/comment",
+          data: {
+            post_id: this.post_id,
+            author_id: common_vendor.index.getStorageSync("user_id"),
+            content: this.plValue
+          },
+          header: {
+            "Authorization": "Bearer " + common_vendor.index.getStorageSync("token")
+          },
+          method: "POST",
+          success: function(res) {
+            if (res.statusCode == 200) {
+              common_vendor.index.showToast({
+                title: "发布成功",
+                duration: 1e3
+              });
+              this.clear();
+              this.getDetail();
+            } else {
+              console.log(res.errMsg);
+            }
+          }.bind(this)
+        });
+      }
     },
     clear() {
       this.plValue = "";
@@ -99,7 +114,7 @@ const _sfc_main = {
             this.tag = info.post.tags[0].split(",");
             this.time = info.post.time.substring(0, 10);
             this.is_help = info.post.is_help;
-            this.picUrl = info.post.pics;
+            this.picUrl = info.post.pics[0].split(",");
             console.log(info.post.pics);
             this.avatarUrl = info.user.avatar;
             common_vendor.index.request({
@@ -119,12 +134,6 @@ const _sfc_main = {
                   console.log("avatar=" + this.avatar);
                   this.comments = [];
                   if (info.comments != null) {
-                    var comment = {
-                      avatar: "/static/logo.png",
-                      name: "name",
-                      content: "asjdoasjdsdjkasdasdasd",
-                      time: "12.31"
-                    };
                     for (let i = 0; i < info.comments.length; i++) {
                       common_vendor.index.request({
                         url: "https://anitu2.2022martu1.cn:8080/api/user/view",
@@ -139,6 +148,12 @@ const _sfc_main = {
                           if (res2.statusCode == 200) {
                             console.log("2222");
                             console.log(res2.data);
+                            var comment = {
+                              avatar: "/static/logo.png",
+                              name: "name",
+                              content: "asjdoasjdsdjkasdasdasd",
+                              time: "12.31"
+                            };
                             comment.avatar = res2.data.avatar;
                             comment.name = res2.data.name;
                             comment.time = info.comments[i].time.substring(0, 10);

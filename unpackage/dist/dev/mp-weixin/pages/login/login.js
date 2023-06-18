@@ -4,8 +4,8 @@ const _sfc_main = {
   name: "my-login",
   data() {
     return {
-      phone_number: "13942919766",
-      password: "ssssss",
+      phone_number: "",
+      password: "",
       showPassword: false
     };
   },
@@ -25,8 +25,16 @@ const _sfc_main = {
             common_vendor.index.switchTab({
               url: "/pages/myInfo/myInfo"
             });
+            common_vendor.index.showToast({
+              title: "登录成功",
+              duration: 1e3
+            });
           } else {
-            console.log(ret);
+            common_vendor.index.showToast({
+              title: ret.data.msg,
+              icon: "error",
+              duration: 1e3
+            });
           }
         },
         fail: (ret) => {

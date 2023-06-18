@@ -14,7 +14,7 @@
 								
 								<uni-popup ref="popup" :mask-click="false" background-color="#fff">
 									<uni-section title="输入图片进行搜索" type="line">
-										<uni-file-picker limit="1" title="最多选择1张图片" v-model="this.searchPic"></uni-file-picker>
+										<uni-file-picker ref="files" :auto-upload="false" limit="1" title="最多选择1张图片" @select="this.uploadPic"></uni-file-picker>
 										<uni-row uni-row class="demo-uni-row">
 											<uni-col :span="12">
 												<button @click="close">关闭</button>
@@ -29,16 +29,34 @@
 							</uni-col>
 		</uni-row>
 		
-		<uni-notice-bar text="上方可进行搜索,下方可查看动物信息的档案" />
+		
+		<view class="cu-card case bg-white padding-bottom animation-slide-top" :style="[{animationDelay: '0.4s'}]" :class="'no-card'">
+				<view class="shadow">
+					<view class="image" style="background:url(https://anitu2.2022martu1.cn/match/bgpic.png)no-repeat center center;height: 150px;background-size: 100% 100%;">
+						<view class="flex justify-between">
+							<view class="padding-sm margin-xsradius ">
+								<view class="text-white text-center text-xl">看看已经登记的小动物们吧~</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
 		
 		<div v-for="(item, index) in block" class="demo-uni-row animation-slide-bottom" :style="[{animationDelay: '0.4s'}]">
 			
 			<uni-card padding="10px 0" >
-				<template v-slot:title>
-					<uni-list>
-						<uni-list-item  :title="item.name" ></uni-list-item>
-					</uni-list>
-				</template>
+				<view class="cu-list menu-avatar comment solids-top">
+								<view class="cu-item">
+									<view class="cu-avatar cuIcon-news">
+									</view>
+									<view class="content">
+										<view class="text-grey">{{item.name}}</view>
+									</view>
+									<view class="content">
+										<view class="text-grey margin-right-xs text-bold">{{item.type}}</view>
+									</view>
+								</view>
+				</view>
 				<image style="width: 100%;" :src="transformUrl(item.picUrl[0])" mode="aspectFill"></image>
 				<view slot="actions" class="card-actions">
 					<button type="default" @click="onClick(item)">
@@ -58,36 +76,11 @@
 		data() {
 			return {
 				gutter: 0,
+				searchPic: "",
 				nvueWidth: 730,
 				searchValue: "",
 				block: [
-					// {
-					// 	ani_name: "ani_name",
-					// 	title: "title",
-					// 	content: "尊敬的客人，非常感谢您选择牛魔酬宾酒店。我们一直以来都以提供一流的服务和舒适的住宿环境为己任，让每位客人都能够感受到家一般的温馨和舒适。\
-					// 	\n\n在这里，您可以享受到最优质的客房和设施，我们的工作人员将竭尽所能为您提供优质的服务，让您的旅途更加愉悦和难忘。我们致力于追求卓越，为客人提供最完美的体验。\
-					// 	\n\n我们也非常注重诚信待客，始终以诚信为本，为每位客人提供公平、透明的服务。无论您是商务出差还是旅游度假，我们都会全力以赴为您提供最好的服务和体验。",
-					// 	tag: ["tag1", "tag2"],
-					// 	picUrl: ["/static/cat1-2.jpg"],
-					// },
-					// {
-					// 	ani_name: "ani_name",
-					// 	title: "title",
-					// 	content: "尊敬的客人，非常感谢您选择牛魔酬宾酒店。我们一直以来都以提供一流的服务和舒适的住宿环境为己任，让每位客人都能够感受到家一般的温馨和舒适。\
-					// 	\n\n在这里，您可以享受到最优质的客房和设施，我们的工作人员将竭尽所能为您提供优质的服务，让您的旅途更加愉悦和难忘。我们致力于追求卓越，为客人提供最完美的体验。\
-					// 	\n\n我们也非常注重诚信待客，始终以诚信为本，为每位客人提供公平、透明的服务。无论您是商务出差还是旅游度假，我们都会全力以赴为您提供最好的服务和体验。",
-					// 	tag: ["tag1", "tag2"],
-					// 	picUrl: ["/static/cat1-2.jpg"],
-					// },
-					// {
-					// 	ani_name: "ani_name",
-					// 	title: "title",
-					// 	content: "尊敬的客人，非常感谢您选择牛魔酬宾酒店。我们一直以来都以提供一流的服务和舒适的住宿环境为己任，让每位客人都能够感受到家一般的温馨和舒适。\
-					// 	\n\n在这里，您可以享受到最优质的客房和设施，我们的工作人员将竭尽所能为您提供优质的服务，让您的旅途更加愉悦和难忘。我们致力于追求卓越，为客人提供最完美的体验。\
-					// 	\n\n我们也非常注重诚信待客，始终以诚信为本，为每位客人提供公平、透明的服务。无论您是商务出差还是旅游度假，我们都会全力以赴为您提供最好的服务和体验。",
-					// 	tag: ["tag1", "tag2"],
-					// 	picUrl: ["/static/cat1-2.jpg"],
-					// }
+					
 				]
 			}
 		},
@@ -101,15 +94,83 @@
 		},
 		
 		methods: {
+			uploadPic(e) {
+				const tempFilePaths = e.tempFilePaths;
+				const imgUrl=tempFilePaths[0]
+				uni.uploadFile({
+				        url: "https://anitu2.2022martu1.cn:8080/api/pic/upload",
+				        filePath: imgUrl,
+				        name: "pic",
+				        header: {
+				        	'Authorization': "Bearer " + uni.getStorageSync('token'),
+				        	
+				        },
+				        formData: {
+				        	"opt": 3
+				        },
+				        success: function(res) {
+				        	if (res.statusCode == 200) {
+				        		const data = JSON.parse(res.data)
+				        		console.log(data.path)
+				        		this.searchPic = data.path
+								console.log(this.searchPic)
+				        	} else {
+				        		console.log(res.data)
+				        	}
+				        }.bind(this),
+				});
+			},
 			transformUrl(url) {
 				return "https://anitu2.2022martu1.cn" + url
 			},
-			search(res) {
-							uni.showToast({
-								title: '搜索：' + res.value,
-								icon: 'none'
-							})
-						},
+			search(res1) {
+				uni.request({
+					url: "https://anitu2.2022martu1.cn:8080/api/animal/search",
+					data: {
+						keyword: this.searchValue
+					},
+					header: {
+						'Authorization': "Bearer " + uni.getStorageSync('token'),
+						'Content-Type': "application/x-www-form-urlencoded",
+					},
+					
+					method: 'GET',
+					success: function(res) {
+						if (res.statusCode == 200) {
+							console.log(res.data)
+							let info = res.data.data.animals
+							this.block = []
+							for (let i = 0; i < info.length; i++) {
+								let post = {
+									id: 0,
+									sex: "",
+									content: "",
+									name: "",
+									picUrl: [],
+									type: "",
+									status: 0,	
+								}
+								post.id = info[i].animal_id
+								post.sex = info[i].animal_sex
+								post.content = info[i].content
+								post.name = info[i].animal_name
+								post.status = info[i].status
+								post.picUrl = info[i].pics
+								post.type = info[i].animal_type
+								console.log(post)
+								this.block.push(post)
+									
+							}
+							console.log(this.block)
+						} else {
+							console.log(res.errMsg)
+						}
+					}.bind(this),
+					fail: (res) => {
+						console.log("fail to connect!")
+					}
+				})	
+			},
 			input(res) {
 							console.log('----input:', res)
 						},
@@ -120,10 +181,7 @@
 							})
 						},
 			cancel(res) {
-							uni.showToast({
-								title: '点击取消，输入值为：' + res.value,
-								icon: 'none'
-							})
+					this.renewPage()
 						},
 			onBackPress() {
 						plus.key.hideSoftKeybord();
@@ -142,6 +200,7 @@
 						content: item.content,
 						name: item.name,
 						picUrl: item.picUrl,
+						type: item.type,
 						status: item.status,	
 					};
 				uni.navigateTo({
@@ -161,7 +220,49 @@
 			},
 			
 			ensure() {
+				console.log(this.searchPic)
 				// send search pic to search
+				uni.request({
+					url: "https://anitu2.2022martu1.cn:8080/api/animal/similarity",
+					data: {
+						pic: this.searchPic
+					},
+					header: {
+						'Authorization': "Bearer " + uni.getStorageSync('token'),
+					},
+					
+					method: 'POST',
+					success: function(res) {
+						if (res.statusCode == 200) {
+							console.log(res.data)
+							console.log(res.data.data.animal)
+							var info = res.data.data.animal
+							// TODO: 
+							const dataObj = {
+									id: info.animal_id,
+									sex: info.animal_sex,
+									content: info.content,
+									name: info.animal_name,
+									picUrl: info.pics,
+									type: info.animal_type,	
+									status: info.status,	
+								};
+							uni.navigateTo({
+								url: "/pages/specificArchive/specificArchive?dataObj=" + encodeURIComponent(JSON.stringify(dataObj))
+							})
+							uni.showToast({
+								title: '找到最相近的小动物是：' + info.animal_name,
+								icon: 'none',
+								duration: 3000
+							})
+						} else {
+							console.log(res.errMsg)
+						}
+					}.bind(this),
+					fail: (res) => {
+						console.log("fail to connect!")
+					}
+				})
 			},
 			
 			renewPage() {
@@ -183,13 +284,14 @@
 							console.log(res.data)
 							let info = res.data.data.animals
 							this.block = []
-							for (let i = 0; i < info.length - 1; i++) {
+							for (let i = 0; i < info.length; i++) {
 								let post = {
 									id: 0,
 									sex: "",
 									content: "",
 									name: "",
 									picUrl: [],
+									type: "",
 									status: 0,	
 								}
 								post.id = info[i].animal_id
@@ -198,6 +300,7 @@
 								post.name = info[i].animal_name
 								post.status = info[i].status
 								post.picUrl = info[i].pics
+								post.type = info[i].animal_type
 								this.block.push(post)
 									// console.log(post)
 							}
